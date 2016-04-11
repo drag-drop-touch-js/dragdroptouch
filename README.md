@@ -14,8 +14,7 @@ do on the desktop.
 
 ## Demo
 
-- [drag drop](http://timruffles.github.io/ios-html5-drag-drop-shim/demo/)
-- [drag drop with enter leave support](http://timruffles.github.io/ios-html5-drag-drop-shim/enter-leave/)
+- [Run Demo](http://Bernardo-Castilho.github.io/dragdroptouch/demo/)
 
 The demo should work on desktop as well as on mobile devices, including
 iPads and Android tablets.
