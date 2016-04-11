@@ -14,7 +14,7 @@ do on the desktop.
 
 ## Demo
 
-- [Run Demo](http://Bernardo-Castilho.github.io/dragdroptouch/demo/)
+- [Run Demo](https://bernardo-castilho.github.io/demo/)
 
 The demo should work on desktop as well as on mobile devices, including
 iPads and Android tablets.
