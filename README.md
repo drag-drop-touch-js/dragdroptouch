@@ -62,7 +62,7 @@ Thanks to Eric Bidelman for the great tutorial on HTML5 drag and drop: [Native H
 
 Thanks also to Chris Wilson and Paul Kinlan for their article on mouse and touch events: [Touch And Mouse] (http://www.html5rocks.com/en/mobile/touchandmouse/).
 
-Finally, thanks to Tim Ruffles for his iOS shim code which was inspiring: [iOS DragDrop Shim] (https://github.com/timruffles/ios-html5-drag-drop-shim)
+Finally, thanks to Tim Ruffles for his iOS shim code which was inspiring: [iOS DragDrop Shim] (https://github.com/timruffles/ios-html5-drag-drop-shim).
 
 ## License
 
