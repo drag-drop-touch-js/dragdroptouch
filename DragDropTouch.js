@@ -107,7 +107,7 @@ var DragDropTouch;
             ddt._imgOffset = { x: offsetX, y: offsetY };
         };
         return DataTransfer;
-    })();
+    }());
     DragDropTouch_1.DataTransfer = DataTransfer;
     /**
      * Defines a class that adds support for touch-based HTML5 drag/drop operations.
@@ -313,14 +313,16 @@ var DragDropTouch;
         // move the drag image element
         DragDropTouch.prototype._moveImage = function (e) {
             var _this = this;
-            requestAnimationFrame(function () {
-                var pt = _this._getPoint(e, true), s = _this._img.style;
-                s.position = 'absolute';
-                s.pointerEvents = 'none';
-                s.zIndex = '999999';
-                s.left = Math.round(pt.x - _this._imgOffset.x) + 'px';
-                s.top = Math.round(pt.y - _this._imgOffset.y) + 'px';
-            });
+            if (this._img) {
+                requestAnimationFrame(function () {
+                    var pt = _this._getPoint(e, true), s = _this._img.style;
+                    s.position = 'absolute';
+                    s.pointerEvents = 'none';
+                    s.zIndex = '999999';
+                    s.left = Math.round(pt.x - _this._imgOffset.x) + 'px';
+                    s.top = Math.round(pt.y - _this._imgOffset.y) + 'px';
+                });
+            }
         };
         // copy properties from an object to another
         DragDropTouch.prototype._copyProps = function (dst, src, props) {
@@ -370,7 +372,7 @@ var DragDropTouch;
         // gets an element's closest draggable ancestor
         DragDropTouch.prototype._closestDraggable = function (e) {
             for (; e; e = e.parentElement) {
-                if (e.hasAttribute('draggable')) {
+                if (e.hasAttribute('draggable') && e.draggable) {
                     return e;
                 }
             }
@@ -389,7 +391,7 @@ var DragDropTouch;
         DragDropTouch._kbdProps = 'altKey,ctrlKey,metaKey,shiftKey'.split(',');
         DragDropTouch._ptProps = 'pageX,pageY,clientX,clientY,screenX,screenY'.split(',');
         return DragDropTouch;
-    })();
+    }());
     DragDropTouch_1.DragDropTouch = DragDropTouch;
 })(DragDropTouch || (DragDropTouch = {}));
 //# sourceMappingURL=DragDropTouchNoWijmo.js.map
