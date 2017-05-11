@@ -137,11 +137,20 @@ var DragDropTouch;
             if (DragDropTouch._instance) {
                 throw 'DragDropTouch instance already created.';
             }
+            // detect passive event support
+            // https://github.com/Modernizr/Modernizr/issues/1894
+            var supportsPassive = false;
+            document.addEventListener('test', null, {
+                get passive() {
+                    supportsPassive = true;
+                    return true;
+                }
+            });
             // listen to touch events
             if ('ontouchstart' in document) {
-                var d = document, ts = this._touchstart.bind(this), tm = this._touchmove.bind(this), te = this._touchend.bind(this);
-                d.addEventListener('touchstart', ts);
-                d.addEventListener('touchmove', tm);
+                var d = document, ts = this._touchstart.bind(this), tm = this._touchmove.bind(this), te = this._touchend.bind(this), opt = supportsPassive ? { passive: false, capture: false } : false;
+                d.addEventListener('touchstart', ts, opt);
+                d.addEventListener('touchmove', tm, opt);
                 d.addEventListener('touchend', te);
                 d.addEventListener('touchcancel', te);
             }
@@ -378,20 +387,20 @@ var DragDropTouch;
             }
             return null;
         };
-        /*private*/ DragDropTouch._instance = new DragDropTouch(); // singleton
-        // constants
-        DragDropTouch._THRESHOLD = 5; // pixels to move before drag starts
-        DragDropTouch._OPACITY = 0.5; // drag image opacity
-        DragDropTouch._DBLCLICK = 500; // max ms between clicks in a double click
-        DragDropTouch._CTXMENU = 900; // ms to hold before raising 'contextmenu' event
-        // copy styles/attributes from drag source to drag image element
-        DragDropTouch._rmvAtts = 'id,class,style,draggable'.split(',');
-        // synthesize and dispatch an event
-        // returns true if the event has been handled (e.preventDefault == true)
-        DragDropTouch._kbdProps = 'altKey,ctrlKey,metaKey,shiftKey'.split(',');
-        DragDropTouch._ptProps = 'pageX,pageY,clientX,clientY,screenX,screenY'.split(',');
         return DragDropTouch;
     }());
+    /*private*/ DragDropTouch._instance = new DragDropTouch(); // singleton
+    // constants
+    DragDropTouch._THRESHOLD = 5; // pixels to move before drag starts
+    DragDropTouch._OPACITY = 0.5; // drag image opacity
+    DragDropTouch._DBLCLICK = 500; // max ms between clicks in a double click
+    DragDropTouch._CTXMENU = 900; // ms to hold before raising 'contextmenu' event
+    // copy styles/attributes from drag source to drag image element
+    DragDropTouch._rmvAtts = 'id,class,style,draggable'.split(',');
+    // synthesize and dispatch an event
+    // returns true if the event has been handled (e.preventDefault == true)
+    DragDropTouch._kbdProps = 'altKey,ctrlKey,metaKey,shiftKey'.split(',');
+    DragDropTouch._ptProps = 'pageX,pageY,clientX,clientY,screenX,screenY'.split(',');
     DragDropTouch_1.DragDropTouch = DragDropTouch;
 })(DragDropTouch || (DragDropTouch = {}));
 //# sourceMappingURL=DragDropTouchNoWijmo.js.map
