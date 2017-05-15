@@ -405,4 +405,3 @@ var DragDropTouch;
     DragDropTouch._ptProps = 'pageX,pageY,clientX,clientY,screenX,screenY'.split(',');
     DragDropTouch_1.DragDropTouch = DragDropTouch;
 })(DragDropTouch || (DragDropTouch = {}));
-//# sourceMappingURL=DragDropTouchNoWijmo.js.map
