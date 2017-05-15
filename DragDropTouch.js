@@ -356,7 +356,7 @@ var DragDropTouch;
             var cs = getComputedStyle(src);
             for (var i = 0; i < cs.length; i++) {
                 var key = cs[i];
-                if (key.indexOf('transition') < 0) {
+               if (key.indexOf('transition') < 0) {
                     dst.style[key] = cs[key];
                 }
             }
