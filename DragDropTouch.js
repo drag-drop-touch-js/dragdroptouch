@@ -322,8 +322,8 @@ var DragDropTouch;
         // move the drag image element
         DragDropTouch.prototype._moveImage = function (e) {
             var _this = this;
-            if (this._img) {
-                requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                if (this._img) {
                     var pt = _this._getPoint(e, true), s = _this._img.style;
                     s.position = 'absolute';
                     s.pointerEvents = 'none';
