@@ -323,7 +323,7 @@ var DragDropTouch;
         DragDropTouch.prototype._moveImage = function (e) {
             var _this = this;
             requestAnimationFrame(function () {
-                if (this._img) {
+                if (_this._img) {
                     var pt = _this._getPoint(e, true), s = _this._img.style;
                     s.position = 'absolute';
                     s.pointerEvents = 'none';
@@ -356,7 +356,7 @@ var DragDropTouch;
             var cs = getComputedStyle(src);
             for (var i = 0; i < cs.length; i++) {
                 var key = cs[i];
-               if (key.indexOf('transition') < 0) {
+                if (key.indexOf('transition') < 0) {
                     dst.style[key] = cs[key];
                 }
             }
@@ -405,3 +405,4 @@ var DragDropTouch;
     DragDropTouch._ptProps = 'pageX,pageY,clientX,clientY,screenX,screenY'.split(',');
     DragDropTouch_1.DragDropTouch = DragDropTouch;
 })(DragDropTouch || (DragDropTouch = {}));
+//# sourceMappingURL=DragDropTouchNoWijmo.js.map
