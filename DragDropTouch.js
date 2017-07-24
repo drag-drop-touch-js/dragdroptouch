@@ -330,8 +330,8 @@ var DragDropTouch;
                     s.zIndex = '999999';
                     s.left = Math.round(pt.x - _this._imgOffset.x) + 'px';
                     s.top = Math.round(pt.y - _this._imgOffset.y) + 'px';
-                });
-            }
+                }
+            });
         };
         // copy properties from an object to another
         DragDropTouch.prototype._copyProps = function (dst, src, props) {
