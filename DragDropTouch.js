@@ -140,7 +140,7 @@ var DragDropTouch;
             // detect passive event support
             // https://github.com/Modernizr/Modernizr/issues/1894
             var supportsPassive = false;
-            document.addEventListener('test', null, {
+            document.addEventListener('test', '', {
                 get passive() {
                     supportsPassive = true;
                     return true;
