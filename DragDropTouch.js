@@ -1,18 +1,3 @@
-function debounce(func, wait, immediate) {
-    var timeout;
-    return function() {
-        var context = this, args = arguments;
-        var later = function() {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-        };
-        var callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
-    };
-};
-
 var DragDropTouch;
 (function (DragDropTouch_1) {
     'use strict';
@@ -155,7 +140,7 @@ var DragDropTouch;
             // detect passive event support
             // https://github.com/Modernizr/Modernizr/issues/1894
             var supportsPassive = false;
-            document.addEventListener('test', function() {}, {
+            document.addEventListener('test', function () { }, {
                 get passive() {
                     supportsPassive = true;
                     return true;
@@ -177,10 +162,7 @@ var DragDropTouch;
             return DragDropTouch._instance;
         };
         // ** event handlers
-        DragDropTouch.prototype._touchstart = debounce(function (e) {
-            var supportsPassive = false;
-            var tm = this._touchmove.bind(this),opt = supportsPassive ? { passive: false, capture: false } : false;
-            document.addEventListener('touchmove', tm, opt);
+        DragDropTouch.prototype._touchstart = function (e) {
             var _this = this;
             if (this._shouldHandle(e)) {
                 // raise double-click and prevent zooming
@@ -215,7 +197,7 @@ var DragDropTouch;
                     }
                 }
             }
-        },500);
+        };
         DragDropTouch.prototype._touchmove = function (e) {
             if (this._shouldHandle(e)) {
                 // see if target wants to handle move
