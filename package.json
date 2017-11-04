@@ -1,0 +1,11 @@
+{
+  "name": "dragdroptouch",
+  "version": "1.1.0",
+  "description": "Polyfill that enables HTML5 drag drop support on mobile (touch) devices.",
+  "main": "DragDropTouch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bernardo Castilho",
+  "license": "MIT"
+}
