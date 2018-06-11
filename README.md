@@ -64,8 +64,7 @@ mouse events, the polyfill performs a few additional tasks:
 
 ## Thanks
 
-Thanks to Bernardo Castilho, who pretty much wrote this entire polyfill apart from a couple of tweeks:
-[DragDropTouch](https://github.com/Bernardo-Castilho).
+Thanks to Bernardo Castilho, who pretty much wrote this entire polyfill apart from a couple of tweaks: [DragDropTouch](https://github.com/Bernardo-Castilho).
 
 Thanks to Eric Bidelman for the great tutorial on HTML5 drag and drop: [Native HTML5 Drag and Drop](http://www.html5rocks.com/en/tutorials/dnd/basics/).
 
