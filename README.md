@@ -1,6 +1,6 @@
 # DragDropTouch
 
-Polyfill that enables HTML5 drag drop support on mobile (touch) devices.
+Polyfill that enables HTML5 drag and drop support on mobile (touch) devices.
 
 The HTML5 specification includes support for drag and drop operations. 
 Unfortunately, most mobile browsers do not implement it, so applications
@@ -19,8 +19,8 @@ do on the desktop.
 The demo should work on desktop as well as on mobile devices, including
 iPads and Android tablets.
 
-The top section of the demo is based on a well-known HTML5 drag and drop 
-sample available here: 
+The top section of the demo is based on a well-known HTML5 drag and drop sample 
+from [html5rocks](http://www.html5rocks.com/en/tutorials/dnd/basics/).
 
 The following sections demonstrate how the polyfill works with 
 standards-based components that use HTML5 drag and drop. You can use
@@ -29,7 +29,13 @@ fields.
 
 ## Install
 
-Add the DragDropTouch.js polyfill to your page to enable drag and drop on mobile devices:
+You can install this polyfill via NPM using the following command:
+
+```cmd
+npm i --save drag-drop-touch
+```
+
+Alternatively, download `DragDropTouch.js` and add it to your HTML:
 
 ```html
 <script src="DragDropTouch.js"></script>
@@ -58,13 +64,14 @@ mouse events, the polyfill performs a few additional tasks:
 
 ## Thanks
 
-Thanks to Eric Bidelman for the great tutorial on HTML5 drag and drop: [Native HTML5 Drag and Drop] (http://www.html5rocks.com/en/tutorials/dnd/basics/).
+Thanks to Bernardo Castilho, who pretty much wrote this entire polyfill apart from a couple of tweaks: [DragDropTouch](https://github.com/Bernardo-Castilho).
 
-Thanks also to Chris Wilson and Paul Kinlan for their article on mouse and touch events: [Touch And Mouse] (http://www.html5rocks.com/en/mobile/touchandmouse/).
+Thanks to Eric Bidelman for the great tutorial on HTML5 drag and drop: [Native HTML5 Drag and Drop](http://www.html5rocks.com/en/tutorials/dnd/basics/).
 
-Finally, thanks to Tim Ruffles for his iOS shim code which was inspiring: [iOS DragDrop Shim] (https://github.com/timruffles/ios-html5-drag-drop-shim).
+Thanks also to Chris Wilson and Paul Kinlan for their article on mouse and touch events: [Touch And Mouse](http://www.html5rocks.com/en/mobile/touchandmouse/).
+
+Finally, thanks to Tim Ruffles for his iOS shim code which was inspiring: [iOS DragDrop Shim](https://github.com/timruffles/ios-html5-drag-drop-shim).
 
 ## License
 
-[MIT License](LICENSE)
-
+[MIT License](https://opensource.org/licenses/MIT)
