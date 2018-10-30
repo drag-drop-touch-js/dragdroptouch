@@ -194,12 +194,22 @@ var DragDropTouch;
                                 }
                             }
                         }, DragDropTouch._CTXMENU);
+                        if (DragDropTouch._ISPRESSHOLDMODE) {
+                            this._pressHoldInterval = setTimeout(function () {
+                                _this._isDragEnabled = true;
+                                _this._touchmove(e);
+                            }, DragDropTouch._PRESSHOLDAWAIT);
+                        }
                     }
                 }
             }
         };
         DragDropTouch.prototype._touchmove = function (e) {
-            if (this._shouldHandle(e)) {
+            if(this._shouldCancelPressHoldMove(e)) {
+              this._reset();
+              return;
+            }
+            if (this._shouldHandleMove(e) || this._shouldHandlePressHoldMove(e)) {
                 // see if target wants to handle move
                 var target = this._getTarget(e);
                 if (this._dispatchEvent(e, 'mousemove', target)) {
@@ -208,13 +218,10 @@ var DragDropTouch;
                     return;
                 }
                 // start dragging
-                if (this._dragSource && !this._img) {
-                    var delta = this._getDelta(e);
-                    if (delta > DragDropTouch._THRESHOLD) {
-                        this._dispatchEvent(e, 'dragstart', this._dragSource);
-                        this._createImage(e);
-                        this._dispatchEvent(e, 'dragenter', target);
-                    }
+                if (this._dragSource && !this._img && this._shouldStartDragging(e)) {
+                    this._dispatchEvent(e, 'dragstart', this._dragSource);
+                    this._createImage(e);
+                    this._dispatchEvent(e, 'dragenter', target);
                 }
                 // continue dragging
                 if (this._img) {
@@ -261,6 +268,31 @@ var DragDropTouch;
                 !e.defaultPrevented &&
                 e.touches && e.touches.length < 2;
         };
+
+        // use regular condition outside of press & hold mode
+        DragDropTouch.prototype._shouldHandleMove = function (e) {
+          return !DragDropTouch._ISPRESSHOLDMODE && this._shouldHandle(e);
+        };
+
+        // allow to handle moves that involve many touches for press & hold
+        DragDropTouch.prototype._shouldHandlePressHoldMove = function (e) {
+          return DragDropTouch._ISPRESSHOLDMODE &&
+              this._isDragEnabled && e && e.touches && e.touches.length;
+        };
+
+        // reset data if user drags without pressing & holding
+        DragDropTouch.prototype._shouldCancelPressHoldMove = function (e) {
+          return DragDropTouch._ISPRESSHOLDMODE && !this._isDragEnabled &&
+              this._getDelta(e) > DragDropTouch._PRESSHOLDMARGIN;
+        };
+
+        // start dragging when specified delta is detected
+        DragDropTouch.prototype._shouldStartDragging = function (e) {
+            var delta = this._getDelta(e);
+            return delta > DragDropTouch._THRESHOLD ||
+                (DragDropTouch._ISPRESSHOLDMODE && delta >= DragDropTouch._PRESSHOLDTHRESHOLD);
+        }
+
         // clear all members
         DragDropTouch.prototype._reset = function () {
             this._destroyImage();
@@ -269,6 +301,8 @@ var DragDropTouch;
             this._lastTarget = null;
             this._ptDown = null;
             this._dataTransfer = new DataTransfer();
+            this._isDragEnabled = false;
+            clearInterval(this._pressHoldInterval);
         };
         // get point for a touch event
         DragDropTouch.prototype._getPoint = function (e, page) {
@@ -279,6 +313,7 @@ var DragDropTouch;
         };
         // get distance between the current touch event and the first one
         DragDropTouch.prototype._getDelta = function (e) {
+            if (DragDropTouch._ISPRESSHOLDMODE && !this._ptDown) { return 0; }
             var p = this._getPoint(e);
             return Math.abs(p.x - this._ptDown.x) + Math.abs(p.y - this._ptDown.y);
         };
@@ -397,6 +432,10 @@ var DragDropTouch;
     DragDropTouch._OPACITY = 0.5; // drag image opacity
     DragDropTouch._DBLCLICK = 500; // max ms between clicks in a double click
     DragDropTouch._CTXMENU = 900; // ms to hold before raising 'contextmenu' event
+    DragDropTouch._ISPRESSHOLDMODE = false; // decides of press & hold mode presence
+    DragDropTouch._PRESSHOLDAWAIT = 400; // ms to wait before press & hold is detected
+    DragDropTouch._PRESSHOLDMARGIN = 25; // pixels that finger might shiver while pressing
+    DragDropTouch._PRESSHOLDTHRESHOLD = 0; // pixels to move before drag starts
     // copy styles/attributes from drag source to drag image element
     DragDropTouch._rmvAtts = 'id,class,style,draggable'.split(',');
     // synthesize and dispatch an event
