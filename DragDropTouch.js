@@ -205,7 +205,7 @@ var DragDropTouch;
             }
         };
         DragDropTouch.prototype._touchmove = function (e) {
-            if(this._shouldCancelPressHoldMove(e)) {
+            if (this._shouldCancelPressHoldMove(e)) {
               this._reset();
               return;
             }
@@ -300,11 +300,10 @@ var DragDropTouch;
             this._lastTouch = null;
             this._lastTarget = null;
             this._ptDown = null;
-            this._dataTransfer = new DataTransfer();
             this._isDragEnabled = false;
-            clearInterval(this._pressHoldInterval);
-
             this._isDropZone = false;
+            this._dataTransfer = new DataTransfer();
+            clearInterval(this._pressHoldInterval);
         };
         // get point for a touch event
         DragDropTouch.prototype._getPoint = function (e, page) {
