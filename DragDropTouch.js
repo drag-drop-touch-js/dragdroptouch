@@ -233,7 +233,7 @@ var DragDropTouch;
                         this._lastTarget = target;
                     }
                     this._moveImage(e);
-                    this._dispatchEvent(e, 'dragover', target);
+                    this._isDropZone = this._dispatchEvent(e, 'dragover', target);
                 }
             }
         };
@@ -253,7 +253,7 @@ var DragDropTouch;
                 // finish dragging
                 this._destroyImage();
                 if (this._dragSource) {
-                    if (e.type.indexOf('cancel') < 0) {
+                    if (e.type.indexOf('cancel') < 0 && this._isDropZone) {
                         this._dispatchEvent(this._lastTouch, 'drop', this._lastTarget);
                     }
                     this._dispatchEvent(this._lastTouch, 'dragend', this._dragSource);
@@ -303,6 +303,8 @@ var DragDropTouch;
             this._dataTransfer = new DataTransfer();
             this._isDragEnabled = false;
             clearInterval(this._pressHoldInterval);
+
+            this._isDropZone = false;
         };
         // get point for a touch event
         DragDropTouch.prototype._getPoint = function (e, page) {
