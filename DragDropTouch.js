@@ -337,6 +337,7 @@ var DragDropTouch;
             this._img = src.cloneNode(true);
             this._copyStyle(src, this._img);
             this._img.style.top = this._img.style.left = '-9999px';
+            this._img.style.transform = 'none';
             // if creating from drag source, apply offset and opacity
             if (!this._imgCustom) {
                 var rc = src.getBoundingClientRect(), pt = this._getPoint(e);
