@@ -70,7 +70,7 @@ var DragDropTouch;
                 delete this._data[type];
             }
             else {
-                this._data = null;
+                this._data = {};
             }
         };
         /**
