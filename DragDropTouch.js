@@ -80,7 +80,7 @@ var DragDropTouch;
          * @param type Type of data to retrieve.
          */
         DataTransfer.prototype.getData = function (type) {
-            return this._data[type] || '';
+            return this._data[String(type).toLowerCase()] || '';
         };
         /**
          * Set the data for a given type.
@@ -92,7 +92,7 @@ var DragDropTouch;
          * @param value Data to add.
          */
         DataTransfer.prototype.setData = function (type, value) {
-            this._data[type] = value;
+            this._data[String(type).toLowerCase()] = value;
         };
         /**
          * Set the image to be used for dragging if a custom one is desired.
