@@ -147,8 +147,12 @@ var DragDropTouch;
                 }
             });
             // listen to touch events
-            if ('ontouchstart' in document) {
-                var d = document, ts = this._touchstart.bind(this), tm = this._touchmove.bind(this), te = this._touchend.bind(this), opt = supportsPassive ? { passive: false, capture: false } : false;
+            if (navigator.maxTouchPoints) {
+                var d = document, 
+                    ts = this._touchstart.bind(this), 
+                    tm = this._touchmove.bind(this), 
+                    te = this._touchend.bind(this), 
+                    opt = supportsPassive ? { passive: false, capture: false } : false;
                 d.addEventListener('touchstart', ts, opt);
                 d.addEventListener('touchmove', tm, opt);
                 d.addEventListener('touchend', te);
