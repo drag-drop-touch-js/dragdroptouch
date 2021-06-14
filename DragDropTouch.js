@@ -67,10 +67,10 @@ var DragDropTouch;
          */
         DataTransfer.prototype.clearData = function (type) {
             if (type != null) {
-                delete this._data[type];
+                delete this._data[type.toLowerCase()];
             }
             else {
-                this._data = null;
+                this._data = {};
             }
         };
         /**
@@ -80,7 +80,7 @@ var DragDropTouch;
          * @param type Type of data to retrieve.
          */
         DataTransfer.prototype.getData = function (type) {
-            return this._data[type] || '';
+            return this._data[type.toLowerCase()] || '';
         };
         /**
          * Set the data for a given type.
@@ -92,7 +92,7 @@ var DragDropTouch;
          * @param value Data to add.
          */
         DataTransfer.prototype.setData = function (type, value) {
-            this._data[type] = value;
+            this._data[type.toLowerCase()] = value;
         };
         /**
          * Set the image to be used for dragging if a custom one is desired.
@@ -231,6 +231,7 @@ var DragDropTouch;
                 if (this._img) {
                     this._lastTouch = e;
                     e.preventDefault(); // prevent scrolling
+                    this._dispatchEvent(e, 'drag', this._dragSource);
                     if (target != this._lastTarget) {
                         this._dispatchEvent(this._lastTouch, 'dragleave', this._lastTarget);
                         this._dispatchEvent(e, 'dragenter', target);
