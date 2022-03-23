@@ -35,6 +35,12 @@ Add the DragDropTouch.js polyfill to your page to enable drag and drop on mobile
 <script src="DragDropTouch.js"></script>
 ```
 
+Or
+
+```html
+<script id="DragDropTouch" src="https://bernardo-castilho.github.io/DragDropTouch/DragDropTouch.js"></script>
+```
+
 ## Polyfill behaviour
 
 The **DragDropTouch** polyfill attaches listeners to the document's touch events:
