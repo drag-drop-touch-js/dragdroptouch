@@ -32,13 +32,13 @@ fields.
 Add the DragDropTouch.js polyfill to your page to enable drag and drop on mobile devices:
 
 ```html
-<script src="DragDropTouch.js"></script>
+  <script src="DragDropTouch.js"></script>
 ```
 
-Or
+Or reference it directly from github:
 
 ```html
-<script id="DragDropTouch" src="https://bernardo-castilho.github.io/DragDropTouch/DragDropTouch.js"></script>
+  <script id="DragDropTouch" src="https://bernardo-castilho.github.io/DragDropTouch/DragDropTouch.js"></script>
 ```
 
 ## Polyfill behaviour
