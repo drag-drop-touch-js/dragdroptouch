@@ -66,7 +66,7 @@ var DragDropTouch;
          * @param type Type of data to remove.
          */
         DataTransfer.prototype.clearData = function (type) {
-            if (type != null) {
+            if (type !== null) {
                 delete this._data[type.toLowerCase()];
             }
             else {
@@ -192,7 +192,7 @@ var DragDropTouch;
                         e.preventDefault();
                         // show context menu if the user hasn't started dragging after a while
                         setTimeout(function () {
-                            if (_this._dragSource == src && _this._img == null) {
+                            if (_this._dragSource === src && _this._img === null) {
                                 if (_this._dispatchEvent(e, 'contextmenu', src)) {
                                     _this._reset();
                                 }
@@ -232,7 +232,7 @@ var DragDropTouch;
                     this._lastTouch = e;
                     e.preventDefault(); // prevent scrolling
                     this._dispatchEvent(e, 'drag', this._dragSource);
-                    if (target != this._lastTarget) {
+                    if (target !== this._lastTarget) {
                         this._dispatchEvent(this._lastTouch, 'dragleave', this._lastTarget);
                         this._dispatchEvent(e, 'dragenter', target);
                         this._lastTarget = target;
