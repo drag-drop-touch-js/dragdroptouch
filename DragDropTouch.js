@@ -66,11 +66,11 @@ var DragDropTouch;
          * @param type Type of data to remove.
          */
         DataTransfer.prototype.clearData = function (type) {
-            if (type != null) {
-                delete this._data[type];
+            if (type !== null) {
+                delete this._data[type.toLowerCase()];
             }
             else {
-                this._data = null;
+                this._data = {};
             }
         };
         /**
@@ -80,7 +80,7 @@ var DragDropTouch;
          * @param type Type of data to retrieve.
          */
         DataTransfer.prototype.getData = function (type) {
-            return this._data[String(type).toLowerCase()] || '';
+            return this._data[type.toLowerCase()] || '';
         };
         /**
          * Set the data for a given type.
@@ -92,7 +92,7 @@ var DragDropTouch;
          * @param value Data to add.
          */
         DataTransfer.prototype.setData = function (type, value) {
-            this._data[String(type).toLowerCase()] = value;
+            this._data[type.toLowerCase()] = value;
         };
         /**
          * Set the image to be used for dragging if a custom one is desired.
@@ -147,8 +147,12 @@ var DragDropTouch;
                 }
             });
             // listen to touch events
-            if ('ontouchstart' in document) {
-                var d = document, ts = this._touchstart.bind(this), tm = this._touchmove.bind(this), te = this._touchend.bind(this), opt = supportsPassive ? { passive: false, capture: false } : false;
+            if (navigator.maxTouchPoints) {
+                var d = document, 
+                    ts = this._touchstart.bind(this), 
+                    tm = this._touchmove.bind(this), 
+                    te = this._touchend.bind(this), 
+                    opt = supportsPassive ? { passive: false, capture: false } : false;
                 d.addEventListener('touchstart', ts, opt);
                 d.addEventListener('touchmove', tm, opt);
                 d.addEventListener('touchend', te);
@@ -188,7 +192,7 @@ var DragDropTouch;
                         e.preventDefault();
                         // show context menu if the user hasn't started dragging after a while
                         setTimeout(function () {
-                            if (_this._dragSource == src && _this._img == null) {
+                            if (_this._dragSource === src && _this._img === null) {
                                 if (_this._dispatchEvent(e, 'contextmenu', src)) {
                                     _this._reset();
                                 }
@@ -219,7 +223,11 @@ var DragDropTouch;
                 }
                 // start dragging
                 if (this._dragSource && !this._img && this._shouldStartDragging(e)) {
-                    this._dispatchEvent(e, 'dragstart', this._dragSource);
+                    if (this._dispatchEvent(this._lastTouch, 'dragstart', this._dragSource)) {
+                        // target canceled the drag event
+                        this._dragSource = null;
+                        return;
+                    }
                     this._createImage(e);
                     this._dispatchEvent(e, 'dragenter', target);
                 }
@@ -227,7 +235,8 @@ var DragDropTouch;
                 if (this._img) {
                     this._lastTouch = e;
                     e.preventDefault(); // prevent scrolling
-                    if (target != this._lastTarget) {
+                    this._dispatchEvent(e, 'drag', this._dragSource);
+                    if (target !== this._lastTarget) {
                         this._dispatchEvent(this._lastTouch, 'dragleave', this._lastTarget);
                         this._dispatchEvent(e, 'dragenter', target);
                         this._lastTarget = target;

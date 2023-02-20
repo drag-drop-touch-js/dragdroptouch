@@ -1,0 +1,29 @@
+{
+  "name": "dragdroptouch",
+  "version": "1.0.0",
+  "description": "Polyfill that enables HTML5 drag drop support on mobile (touch) devices",
+  "main": "DragDropTouch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rozek/dragdroptouch.git"
+  },
+  "keywords": [
+    "html5",
+    "drag",
+    "drop",
+    "mobile",
+    "touch"
+  ],
+  "author": "Bernardo Castilho (https://github.com/Bernardo-Castilho)",
+  "contributors": [
+    "Andreas Rozek <a.rozek@gmx.de> (https://www.rozek.de/)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rozek/dragdroptouch/issues"
+  },
+  "homepage": "https://github.com/rozek/dragdroptouch#readme"
+}
