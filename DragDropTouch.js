@@ -223,7 +223,11 @@ var DragDropTouch;
                 }
                 // start dragging
                 if (this._dragSource && !this._img && this._shouldStartDragging(e)) {
-                    this._dispatchEvent(e, 'dragstart', this._dragSource);
+                    if (this._dispatchEvent(this._lastTouch, 'dragstart', this._dragSource)) {
+                        // target canceled the drag event
+                        this._dragSource = null;
+                        return;
+                    }
                     this._createImage(e);
                     this._dispatchEvent(e, 'dragenter', target);
                 }
