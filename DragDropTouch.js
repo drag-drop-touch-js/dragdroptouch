@@ -411,6 +411,20 @@ var DragDropTouch;
                 this._copyStyle(src.children[i], dst.children[i]);
             }
         };
+        // compute missing offset or layer property for an event
+        DragDropTouch.prototype._setOffsetAndLayerProps = function (e, target) {
+            var rect = undefined;
+            if (e.offsetX === undefined) {
+                rect = target.getBoundingClientRect();
+                e.offsetX = e.clientX - rect.x;
+                e.offsetY = e.clientY - rect.y;
+            }
+            if (e.layerX === undefined) {
+                rect = rect || target.getBoundingClientRect();
+                e.layerX = e.pageX - rect.left;
+                e.layerY = e.pageY - rect.top;
+            }
+        }
         DragDropTouch.prototype._dispatchEvent = function (e, type, target) {
             if (e && target) {
                 var evt = document.createEvent('Event'), t = e.touches ? e.touches[0] : e;
@@ -419,6 +433,7 @@ var DragDropTouch;
                 evt.which = evt.buttons = 1;
                 this._copyProps(evt, e, DragDropTouch._kbdProps);
                 this._copyProps(evt, t, DragDropTouch._ptProps);
+                this._setOffsetAndLayerProps(evt, target);
                 evt.dataTransfer = this._dataTransfer;
                 target.dispatchEvent(evt);
                 return evt.defaultPrevented;
