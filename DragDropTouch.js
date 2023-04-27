@@ -169,14 +169,6 @@ var DragDropTouch;
         DragDropTouch.prototype._touchstart = function (e) {
             var _this = this;
             if (this._shouldHandle(e)) {
-                // raise double-click and prevent zooming
-                if (Date.now() - this._lastClick < DragDropTouch._DBLCLICK) {
-                    if (this._dispatchEvent(e, 'dblclick', e.target)) {
-                        e.preventDefault();
-                        this._reset();
-                        return;
-                    }
-                }
                 // clear all variables
                 this._reset();
                 // get nearest draggable element
