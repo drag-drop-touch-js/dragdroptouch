@@ -47,3 +47,8 @@
         margin: 0.4rem;
         width: 5rem;;
     }
+
+
+.wj-flexgrid {
+    max-height: 200px;
+}    
