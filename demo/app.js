@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 // define angular app (with dependency on Wijmo)
-var app = angular.module('app', ['wj']);
+let app = angular.module('app', ['wj']);
 
 // define app's single controller
 app.controller('appCtrl', function ($scope) {
@@ -12,7 +12,7 @@ app.controller('appCtrl', function ($scope) {
     // http://www.html5rocks.com/en/tutorials/dnd/basics/
 
     // hook up event handlers
-    var cols = document.querySelectorAll('#columns .column');
+    let cols = document.querySelectorAll('#columns .column');
     [].forEach.call(cols, function (col) {
         col.addEventListener('dragstart', handleDragStart, false);
         col.addEventListener('dragenter', handleDragEnter, false)
@@ -22,18 +22,18 @@ app.controller('appCtrl', function ($scope) {
         col.addEventListener('dragend', handleDragEnd, false);
     });
 
-    var dragSrcEl = null;
+    let dragSrcEl = null;
     function handleDragStart(e) {
         if (e.target.className.indexOf('column') > -1) {
             dragSrcEl = e.target;
             dragSrcEl.style.opacity = '0.4';
-            var dt = e.dataTransfer;
+            let dt = e.dataTransfer;
             dt.effectAllowed = 'move';
             dt.setData('text', dragSrcEl.innerHTML);
 
             // customize drag image for one of the panels
             if (dt.setDragImage instanceof Function && e.target.innerHTML.indexOf('X') > -1) {
-                var img = new Image();
+                let img = new Image();
                 img.src = 'dragimage.jpg';
                 dt.setDragImage(img, img.width / 2, img.height / 2);
             }
@@ -68,18 +68,31 @@ app.controller('appCtrl', function ($scope) {
             e.stopImmediatePropagation();
             e.preventDefault();
             if (dragSrcEl != this) {
-                dragSrcEl.innerHTML = e.target.innerHTML;
-                this.innerHTML = e.dataTransfer.getData('text');
+                swapDom(dragSrcEl, this);
+                //dragSrcEl.innerHTML = e.target.innerHTML;
+                //this.innerHTML = e.dataTransfer.getData('text');
             }
         }
     }
 
+    // https://stackoverflow.com/questions/9732624/how-to-swap-dom-child-nodes-in-javascript
+    function swapDom(a,b) {
+        let aParent = a.parentNode;
+        let bParent = b.parentNode;
+        let aHolder = document.createElement("div");
+        let bHolder = document.createElement("div");
+        aParent.replaceChild(aHolder, a);
+        bParent.replaceChild(bHolder, b);
+        aParent.replaceChild(b, aHolder);
+        bParent.replaceChild(a, bHolder);    
+    }    
+
     //-----------------------------------------------------------------------------
     // define some sample data for the FlexGrid and Olap controls
-    var products = 'Alpina,Gumpert,Isdera,Keinath,Adler,Borgward'.split(','),
+    let products = 'Alpina,Gumpert,Isdera,Keinath,Adler,Borgward'.split(','),
         countries = 'USA,UK,Japan,Germany'.split(',');
     $scope.data = [];
-    for (var i = 0; i < 100; i++) {
+    for (let i = 0; i < 100; i++) {
         $scope.data.push({
             id: i,
             product: products[i % products.length],

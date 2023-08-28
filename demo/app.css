@@ -2,6 +2,11 @@
     user-select: none;
 }
 
+#columns {
+    display: flex;
+    gap: 1rem;
+}
+
 .column {
     height: 150px;
     width: 150px;
@@ -27,4 +32,18 @@
     }
     .column.over {
         border: 2px dashed #000;
+    }
+
+    .column >input,
+    .column >textarea,
+    .column >select {
+        width: 8rem;
+        resize: none;
+        margin: 0.4rem;
+        display: block;
+    }
+
+    .column >img {
+        margin: 0.4rem;
+        width: 5rem;;
     }

@@ -43,10 +43,32 @@
             be able to drag the rectangles to new positions using the mouse or
             touch.</p>
         <div id="columns">
-            <div class="column" draggable="true"><header>A</header></div>
-            <div class="column" draggable="true"><header>B</header></div>
-            <div class="column" draggable="true"><header>C</header></div>
-            <div class="column" draggable="true"><header>X</header></div>
+            <div class="column" draggable="true">
+                <header>Input</header>
+                <input title="input" type="text" placeholder="input" autocomplete="none">
+                <input title="check" type="checkbox">
+            </div>
+            <div class="column" draggable="true">
+                <header>TextArea</header>
+                <textarea title="textarea" placeholder="textarea"></textarea>
+            </div>
+            <div class="column" draggable="true">
+                <header>Select</header>
+                <select title="select">
+                    <option>one</option>
+                    <option>two</option>
+                    <option>three</option>
+                </select>
+                <select title="multi" multiple>
+                    <option>one</option>
+                    <option>two</option>
+                    <option>three</option>
+                </select>
+            </div>
+            <div class="column" draggable="true">
+                <header>Image</header>
+                <img src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg" alt="grapefruit">
+            </div>
         </div>
 
         <h2>

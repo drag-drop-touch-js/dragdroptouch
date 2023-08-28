@@ -1,4 +1,4 @@
-var DragDropTouch;
+let DragDropTouch;
 (function (DragDropTouch_1) {
     'use strict';
     /**
@@ -11,7 +11,7 @@ var DragDropTouch;
      * This object is created automatically by the @see:DragDropTouch singleton and is
      * accessible through the @see:dataTransfer property of all drag events.
      */
-    var DataTransfer = (function () {
+    let DataTransfer = (function () {
         function DataTransfer() {
             this._dropEffect = 'move';
             this._effectAllowed = 'all';
@@ -102,7 +102,7 @@ var DragDropTouch;
          * @param offsetY The vertical offset within the image.
          */
         DataTransfer.prototype.setDragImage = function (img, offsetX, offsetY) {
-            var ddt = DragDropTouch._instance;
+            let ddt = DragDropTouch._instance;
             ddt._imgCustom = img;
             ddt._imgOffset = { x: offsetX, y: offsetY };
         };
@@ -127,7 +127,7 @@ var DragDropTouch;
      * For details and examples on HTML drag and drop, see
      * https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Drag_operations.
      */
-    var DragDropTouch = (function () {
+    let DragDropTouch = (function () {
         /**
          * Initializes the single instance of the @see:DragDropTouch class.
          */
@@ -139,7 +139,7 @@ var DragDropTouch;
             }
             // detect passive event support
             // https://github.com/Modernizr/Modernizr/issues/1894
-            var supportsPassive = false;
+            let supportsPassive = false;
             document.addEventListener('test', function () { }, {
                 get passive() {
                     supportsPassive = true;
@@ -148,7 +148,7 @@ var DragDropTouch;
             });
             // listen to touch events
             if (navigator.maxTouchPoints) {
-                var d = document, 
+                let d = document, 
                     ts = this._touchstart.bind(this), 
                     tm = this._touchmove.bind(this), 
                     te = this._touchend.bind(this), 
@@ -167,12 +167,12 @@ var DragDropTouch;
         };
         // ** event handlers
         DragDropTouch.prototype._touchstart = function (e) {
-            var _this = this;
+            let _this = this;
             if (this._shouldHandle(e)) {
                 // clear all variables
                 this._reset();
                 // get nearest draggable element
-                var src = this._closestDraggable(e.target);
+                let src = this._closestDraggable(e.target);
                 if (src) {
                     // give caller a chance to handle the hover/move events
                     if (!this._dispatchEvent(e, 'mousemove', e.target) &&
@@ -181,7 +181,10 @@ var DragDropTouch;
                         this._dragSource = src;
                         this._ptDown = this._getPoint(e);
                         this._lastTouch = e;
-                        e.preventDefault();
+
+                        // do not prevent default (so input elements keep working)
+                        //e.preventDefault();
+
                         // show context menu if the user hasn't started dragging after a while
                         setTimeout(function () {
                             if (_this._dragSource === src && _this._img === null) {
@@ -207,7 +210,7 @@ var DragDropTouch;
             }
             if (this._shouldHandleMove(e) || this._shouldHandlePressHoldMove(e)) {
                 // see if target wants to handle move
-                var target = this._getTarget(e);
+                let target = this._getTarget(e);
                 if (this._dispatchEvent(e, 'mousemove', target)) {
                     this._lastTouch = e;
                     e.preventDefault();
@@ -289,7 +292,7 @@ var DragDropTouch;
 
         // start dragging when specified delta is detected
         DragDropTouch.prototype._shouldStartDragging = function (e) {
-            var delta = this._getDelta(e);
+            let delta = this._getDelta(e);
             return delta > DragDropTouch._THRESHOLD ||
                 (DragDropTouch._ISPRESSHOLDMODE && delta >= DragDropTouch._PRESSHOLDTHRESHOLD);
         }
@@ -316,12 +319,13 @@ var DragDropTouch;
         // get distance between the current touch event and the first one
         DragDropTouch.prototype._getDelta = function (e) {
             if (DragDropTouch._ISPRESSHOLDMODE && !this._ptDown) { return 0; }
-            var p = this._getPoint(e);
+            let p = this._getPoint(e);
             return Math.abs(p.x - this._ptDown.x) + Math.abs(p.y - this._ptDown.y);
         };
         // get the element at a given touch event
         DragDropTouch.prototype._getTarget = function (e) {
-            var pt = this._getPoint(e), el = document.elementFromPoint(pt.x, pt.y);
+            let pt = this._getPoint(e),
+                el = document.elementFromPoint(pt.x, pt.y);
             while (el && getComputedStyle(el).pointerEvents == 'none') {
                 el = el.parentElement;
             }
@@ -334,13 +338,14 @@ var DragDropTouch;
                 this._destroyImage();
             }
             // create drag image from custom element or drag source
-            var src = this._imgCustom || this._dragSource;
+            let src = this._imgCustom || this._dragSource;
             this._img = src.cloneNode(true);
             this._copyStyle(src, this._img);
             this._img.style.top = this._img.style.left = '-9999px';
             // if creating from drag source, apply offset and opacity
             if (!this._imgCustom) {
-                var rc = src.getBoundingClientRect(), pt = this._getPoint(e);
+                let rc = src.getBoundingClientRect(),
+                    pt = this._getPoint(e);
                 this._imgOffset = { x: pt.x - rc.left, y: pt.y - rc.top };
                 this._img.style.opacity = DragDropTouch._OPACITY.toString();
             }
@@ -358,10 +363,11 @@ var DragDropTouch;
         };
         // move the drag image element
         DragDropTouch.prototype._moveImage = function (e) {
-            var _this = this;
+            let _this = this;
             requestAnimationFrame(function () {
                 if (_this._img) {
-                    var pt = _this._getPoint(e, true), s = _this._img.style;
+                    let pt = _this._getPoint(e, true),
+                        s = _this._img.style;
                     s.position = 'absolute';
                     s.pointerEvents = 'none';
                     s.zIndex = '999999';
@@ -372,8 +378,8 @@ var DragDropTouch;
         };
         // copy properties from an object to another
         DragDropTouch.prototype._copyProps = function (dst, src, props) {
-            for (var i = 0; i < props.length; i++) {
-                var p = props[i];
+            for (let i = 0; i < props.length; i++) {
+                let p = props[i];
                 dst[p] = src[p];
             }
         };
@@ -384,28 +390,29 @@ var DragDropTouch;
             });
             // copy canvas content
             if (src instanceof HTMLCanvasElement) {
-                var cSrc = src, cDst = dst;
+                let cSrc = src,
+                    cDst = dst;
                 cDst.width = cSrc.width;
                 cDst.height = cSrc.height;
                 cDst.getContext('2d').drawImage(cSrc, 0, 0);
             }
             // copy style (without transitions)
-            var cs = getComputedStyle(src);
-            for (var i = 0; i < cs.length; i++) {
-                var key = cs[i];
+            let cs = getComputedStyle(src);
+            for (let i = 0; i < cs.length; i++) {
+                let key = cs[i];
                 if (key.indexOf('transition') < 0) {
                     dst.style[key] = cs[key];
                 }
             }
             dst.style.pointerEvents = 'none';
             // and repeat for all children
-            for (var i = 0; i < src.children.length; i++) {
+            for (let i = 0; i < src.children.length; i++) {
                 this._copyStyle(src.children[i], dst.children[i]);
             }
         };
         // compute missing offset or layer property for an event
         DragDropTouch.prototype._setOffsetAndLayerProps = function (e, target) {
-            var rect = undefined;
+            let rect = undefined;
             if (e.offsetX === undefined) {
                 rect = target.getBoundingClientRect();
                 e.offsetX = e.clientX - rect.x;
@@ -419,12 +426,14 @@ var DragDropTouch;
         }
         DragDropTouch.prototype._dispatchEvent = function (e, type, target) {
             if (e && target) {
-                var evt = document.createEvent('Event'), t = e.touches ? e.touches[0] : e;
-                evt.initEvent(type, true, true);
+                //let evt = document.createEvent('Event'), t = e.touches ? e.touches[0] : e; // deprecated
+                //evt.initEvent(type, true, true); // deprecated
+                let evt = new Event(type, { bubbles: true, cancelable: true }),
+                touch = e.touches ? e.touches[0] : e;
                 evt.button = 0;
                 evt.which = evt.buttons = 1;
                 this._copyProps(evt, e, DragDropTouch._kbdProps);
-                this._copyProps(evt, t, DragDropTouch._ptProps);
+                this._copyProps(evt, touch, DragDropTouch._ptProps);
                 this._setOffsetAndLayerProps(evt, target);
                 evt.dataTransfer = this._dataTransfer;
                 target.dispatchEvent(evt);
