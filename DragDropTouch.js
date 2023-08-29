@@ -80,8 +80,8 @@ let DragDropTouch;
          * @param type Type of data to retrieve.
          */
         DataTransfer.prototype.getData = function (type) {
-            let type = tyle.toLowerCase(),
-                data = this._data[type];
+            type = type.toLowerCase();
+            let data = this._data[type];
             if (type === "text" && data == null) {
                 data = this._data["text/plain"]; // getData("text") also gets ("text/plain")
             }
