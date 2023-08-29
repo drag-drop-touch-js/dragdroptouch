@@ -429,7 +429,7 @@ let DragDropTouch;
                 //let evt = document.createEvent('Event'), t = e.touches ? e.touches[0] : e; // deprecated
                 //evt.initEvent(type, true, true); // deprecated
                 let evt = new Event(type, { bubbles: true, cancelable: true }),
-                touch = e.touches ? e.touches[0] : e;
+                    touch = e.touches ? e.touches[0] : e;
                 evt.button = 0;
                 evt.which = evt.buttons = 1;
                 this._copyProps(evt, e, DragDropTouch._kbdProps);
@@ -442,9 +442,10 @@ let DragDropTouch;
             return false;
         };
         // gets an element's closest draggable ancestor
+        // <img> and <a> elements are draggable by default
         DragDropTouch.prototype._closestDraggable = function (e) {
             for (; e; e = e.parentElement) {
-                if (e.hasAttribute('draggable') && e.draggable) {
+                if (/*e.hasAttribute('draggable') &&*/ e.draggable) {
                     return e;
                 }
             }
