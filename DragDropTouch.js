@@ -174,6 +174,19 @@ let DragDropTouch;
         DragDropTouch.prototype._touchstart = function (e) {
             let _this = this;
             if (this._shouldHandle(e)) {
+                // raise double-click and prevent zooming
+                if(e.target.draggable === "false" || !e.target.draggable)
+                    this._flag = false;
+                else if (Date.now() - this._lastClick < DragDropTouch._DBLCLICK) {
+                    this._flag = true;
+                    if (this._dispatchEvent(e, 'dblclick', e.target)) {
+                        e.preventDefault();
+                        this._reset();
+                        return;
+                    }
+                } 
+                else this._flag = true;
+                if(this._flag) {
                 // clear all variables
                 this._reset();
                 // get nearest draggable element
@@ -207,8 +220,10 @@ let DragDropTouch;
                     }
                 }
             }
+            }
         };
         DragDropTouch.prototype._touchmove = function (e) {
+            if(this._flag) {
             if (this._shouldCancelPressHoldMove(e)) {
               this._reset();
               return;
@@ -244,9 +259,11 @@ let DragDropTouch;
                     this._moveImage(e);
                     this._isDropZone = this._dispatchEvent(e, 'dragover', target);
                 }
+                }
             }
         };
         DragDropTouch.prototype._touchend = function (e) {
+            if(this._flag) {
             if (this._shouldHandle(e)) {
                 // see if target wants to handle up
                 if (this._dispatchEvent(this._lastTouch, 'mouseup', e.target)) {
@@ -267,6 +284,7 @@ let DragDropTouch;
                     }
                     this._dispatchEvent(this._lastTouch, 'dragend', this._dragSource);
                     this._reset();
+                }
                 }
             }
         };
@@ -468,6 +486,7 @@ let DragDropTouch;
     DragDropTouch._PRESSHOLDAWAIT = 400; // ms to wait before press & hold is detected
     DragDropTouch._PRESSHOLDMARGIN = 25; // pixels that finger might shiver while pressing
     DragDropTouch._PRESSHOLDTHRESHOLD = 0; // pixels to move before drag starts
+    DragDropTouch._flag = true; // flag to identify difference between single click & double click.
     // copy styles/attributes from drag source to drag image element
     DragDropTouch._rmvAtts = 'id,class,style,draggable'.split(',');
     // synthesize and dispatch an event
