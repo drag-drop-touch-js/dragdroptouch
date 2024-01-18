@@ -85,7 +85,8 @@ let DragDropTouch;
             if (lcType === "text" && data == null) {
                 data = this._data["text/plain"]; // getData("text") also gets ("text/plain")
             }
-            return data || "";
+
+            return data;
         };
         /**
          * Set the data for a given type.
