@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rozek/dragdroptouch.git"
+    "url": "git+https://github.com/Bernardo-Castilho/dragdroptouch.git"
   },
   "keywords": [
     "html5",
@@ -23,7 +23,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rozek/dragdroptouch/issues"
+    "url": "https://github.com/Bernardo-Castilho/dragdroptouch/issues"
   },
-  "homepage": "https://github.com/rozek/dragdroptouch#readme"
+  "homepage": "https://github.com/Bernardo-Castilho/dragdroptouch#readme"
 }
