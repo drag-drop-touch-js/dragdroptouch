@@ -1,6 +1,7 @@
 type DDT = {
-  setDragImage: (img: HTMLElement, offsetX: number, offsetY: number) => void
-}
+  setDragImage: (img: HTMLElement, offsetX: number, offsetY: number) => void;
+};
+
 /**
  * Object used to hold the data that is being dragged during drag and drop operations.
  *
@@ -16,11 +17,12 @@ export class DragDTO {
   private _effectAllowed: any;
   private _data: any;
   private _dragDropTouch: any;
+
   constructor(dragDropTouch: DDT) {
-    this._dropEffect = 'move';
-    this._effectAllowed = 'all';
+    this._dropEffect = "move";
+    this._effectAllowed = "all";
     this._data = {};
-    this._dragDropTouch = dragDropTouch
+    this._dragDropTouch = dragDropTouch;
   }
 
   get dropEffect() {
@@ -43,6 +45,10 @@ export class DragDTO {
     return Object.keys(this._data);
   }
 
+  /**
+   * ...docs go here...
+   * @param type
+   */
   clearData(type: string) {
     if (type !== null) {
       delete this._data[type.toLowerCase()];
@@ -51,6 +57,11 @@ export class DragDTO {
     }
   }
 
+  /**
+   * ...docs go here...
+   * @param type
+   * @returns
+   */
   getData(type: string) {
     let lcType = type.toLowerCase(),
       data = this._data[lcType];
@@ -60,11 +71,22 @@ export class DragDTO {
     return data; // @see https://github.com/Bernardo-Castilho/dragdroptouch/pull/61/files
   }
 
+  /**
+   * ...docs go here...
+   * @param type
+   * @param value
+   */
   setData(type: string, value: any) {
     this._data[type.toLowerCase()] = value;
   }
 
+  /**
+   * ...docs go here...
+   * @param img
+   * @param offsetX
+   * @param offsetY
+   */
   setDragImage(img: Element, offsetX: number, offsetY: number) {
-    this._dragDropTouch.setDragImage(img, offsetX, offsetY)
+    this._dragDropTouch.setDragImage(img, offsetX, offsetY);
   }
 }
