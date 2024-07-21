@@ -1,5 +1,7 @@
 ﻿// Set up automagical touch-to-drag-event rewriting
 import "./../dist/drag-drop-touch.esm.js?autoload";
+import { drag, tap } from "./touch-simulation.js";
+globalThis.simulatedTouch = { drag, tap };
 
 // The rest of the code doesn't know anything about touch
 // events, it's written as normal drag-and-drop handlers.

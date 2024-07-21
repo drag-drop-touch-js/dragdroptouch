@@ -32,7 +32,7 @@ test.describe(`touch events`, () => {
     await page.evaluate(
       async ({ sourceSelector }) => {
         const element = document.querySelector(sourceSelector);
-        globalThis.simulatedTouch.tap(element);
+        await globalThis.simulatedTouch.tap(element);
       },
       { sourceSelector }
     );
@@ -43,19 +43,47 @@ test.describe(`touch events`, () => {
       async ({ sourceSelector, targetSelector }) => {
         const from = document.querySelector(sourceSelector);
         const to = document.querySelector(targetSelector);
-        globalThis.simulatedTouch.drag(from, to);
+        await globalThis.simulatedTouch.drag(from, to);
       },
       { sourceSelector, targetSelector }
     );
   }
 
-  /**
-   * Touch events
-   */
-  test.describe(`drag events`, () => {
-    test(`drag the left-most element onto the right-most element`, async () => {
-      // code goes here
-      expect(1).toBe(1);
-    });
+  test(`drag the left-most element onto its adjacent element`, async () => {
+    const from = `[draggable]:nth-child(1) header`;
+    const to = `[draggable]:nth-child(2) header`;
+
+    const e1 = page.locator(from);
+    const e2 = page.locator(to);
+
+    expect(await e1.textContent()).toBe(`Input`);
+    expect(await e2.textContent()).toBe(`TextArea`);
+
+    await touchDragEntry(from, to);
+
+    const e3 = page.locator(from);
+    const e4 = page.locator(to);
+
+    expect(await e3.textContent()).toBe(`TextArea`);
+    expect(await e4.textContent()).toBe(`Input`);
+  });
+
+  test(`drag the left-most element onto the right-most element`, async () => {
+    const from = `[draggable]:first-child header`;
+    const to = `[draggable]:last-child header`;
+
+    const e1 = page.locator(from);
+    const e2 = page.locator(to);
+
+    expect(await e1.textContent()).toBe(`Input`);
+    expect(await e2.textContent()).toBe(`Image`);
+
+    await touchDragEntry(from, to);
+
+    const e3 = page.locator(from);
+    const e4 = page.locator(to);
+
+    expect(await e3.textContent()).toBe(`Image`);
+    expect(await e4.textContent()).toBe(`Input`);
   });
 });
