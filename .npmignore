@@ -1,0 +1,6 @@
+demo/*
+node_modules/*
+tests/*
+ts/*
+.gitignore
+server.js
