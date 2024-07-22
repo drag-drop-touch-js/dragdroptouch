@@ -1,5 +1,5 @@
 {
-  "name": "dragdroptouch",
+  "name": "drag-drop-touch",
   "version": "2.0.0",
   "description": "A polyfill that enables HTML5 drag-and-drop support for touch devices",
   "type": "module",
