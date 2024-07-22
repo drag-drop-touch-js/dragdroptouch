@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DragDropTouch</title>
+    <script
+      src="../dist/drag-drop-touch.esm.min.js?autoload"
+      type="module"
+    ></script>
+    <script src="./index.js" type="module" async></script>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Drag and Drop Touch</h1>
+      <p>
+        This is a demo page that loads the drag-drop-touch.esm.js file for
+        shimming drag-and-drop functions for touch events.
+      </p>
+      <p>
+        Its project page is over on
+        <a href="https://github.com/Bernardo-Castilho/dragdroptouch"
+          >https://github.com/Bernardo-Castilho/dragdroptouch</a
+        >.
+      </p>
+    </header>
+
+    <main>
+      <section>
+        <header>
+          <h2>A box dragging example</h2>
+          <p>
+            Drag some boxes around with the mouse, then open your Developer
+            Tools, turn on mobile emulation, and try to do the same with touch
+            input enabled. Things should still work.
+          </p>
+        </header>
+
+        <div id="columns">
+          <div class="column" draggable="true">
+            <header>Input</header>
+            <input
+              title="input"
+              type="text"
+              placeholder="input"
+              autocomplete="none"
+            />
+            <input title="check" type="checkbox" />
+          </div>
+
+          <div class="column" draggable="true">
+            <header>TextArea</header>
+            <textarea title="textarea" placeholder="textarea"></textarea>
+          </div>
+
+          <div class="column" draggable="true">
+            <header>Select</header>
+            <select title="select">
+              <option>one</option>
+              <option>two</option>
+              <option>three</option>
+            </select>
+            <select title="multi" multiple>
+              <option>one</option>
+              <option>two</option>
+              <option>three</option>
+            </select>
+          </div>
+
+          <div class="column" draggable="true">
+            <header>Image</header>
+            <img
+              src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"
+              alt="grapefruit"
+              draggable="false"
+            />
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
