@@ -10,10 +10,10 @@
     "build:min": "npm run build:base -- --minify --outfile=dist/drag-drop-touch.esm.min.js",
     "build": "npm run lint && npm run build:esm && npm run build:min",
     "lint": "prettier -w ts/*.ts",
-    "postinstall": "playwright install",
     "server": "node server.js",
     "start": "npm run build && npm run server",
     "test:integration": "playwright test tests --workers=1 --timeout 5000 --global-timeout 15000",
+    "dev:setup": "playwright install",
     "test": "npm run start -- -- --test  && rm -rf test-results"
   },
   "repository": {
