@@ -1,5 +1,4 @@
-﻿// Set up automagical touch-to-drag-event rewriting
-import "./../dist/drag-drop-touch.esm.js?autoload";
+﻿// Add a tiny touch simulator for CI testing
 import { drag, tap } from "./touch-simulation.js";
 globalThis.simulatedTouch = { drag, tap };
 

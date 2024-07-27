@@ -127,8 +127,8 @@ polyfill works:
   actually move before the polyfill switches to drag mode rather than click mode.
   This value is 5 by default
 - **isPressHoldMode** is a flag that tells the polyfill whether a a long-press
-  should count as a user signal to "pick up an item" for drag and drop purposes.
-  This value can be either `true` or `false`, and is `false` by default.
+  is required before polyfilling drag events. This value can be either `true` or
+  `false`, and is `false` by default.
 - **forceListen** is a flag that determines whether the polyfill should be
   enabled irrespective of whether the browser indicates that it's running on
   a touch-enabled device or not. This value is `true` by default.
