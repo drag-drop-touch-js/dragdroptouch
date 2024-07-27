@@ -516,7 +516,7 @@ var DragDropTouch = class {
    */
   _closestDraggable(element) {
     for (let e = element; e !== null; e = e.parentElement) {
-      if (e.getAttribute(`draggable`) || e.draggable) {
+      if (e.getAttribute(`draggable`) === `true` || e.draggable) {
         return e;
       }
     }
