@@ -86,4 +86,16 @@ test.describe(`touch events`, () => {
     expect(await e3.textContent()).toBe(`Image`);
     expect(await e4.textContent()).toBe(`Input`);
   });
+
+  test(`drag the right-most element by touch-dragging the image`, async () => {
+    const from = `[draggable]:last-child img`;
+    const to = `[draggable]:first-child header`;
+    await touchDragEntry(from, to);
+
+    const e1 = page.locator(from.replace(`img`, `header`));
+    const e2 = page.locator(to);
+
+    expect(await e1.textContent()).toBe(`Input`);
+    expect(await e2.textContent()).toBe(`Image`);
+  });
 });
