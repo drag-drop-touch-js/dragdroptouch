@@ -108,8 +108,6 @@ class DragDropTouch {
   private _img: HTMLElement | null;
   private _imgCustom: HTMLElement | null;
   private _imgOffset: Point;
-
-  private _contextMenuIntervalId?: ReturnType<typeof setTimeout> | undefined;
   private _pressHoldIntervalId?: ReturnType<typeof setTimeout> | undefined;
 
   private readonly configuration: DragDropTouchConfiguration;
@@ -133,7 +131,7 @@ class DragDropTouch {
   constructor(
     dragRoot: Document | Element = document,
     dropRoot: Document | Element = document,
-    options?: Partial<DragDropTouchConfiguration>,
+    options?: Partial<DragDropTouchConfiguration>
   ) {
     this.configuration = { ...DefaultConfiguration, ...(options || {}) };
     this._dragRoot = dragRoot;
@@ -170,20 +168,20 @@ class DragDropTouch {
     this._dragRoot.addEventListener(
       `touchstart`,
       this._touchstart.bind(this) as EventListener,
-      opt,
+      opt
     );
     this._dragRoot.addEventListener(
       `touchmove`,
       this._touchmove.bind(this) as EventListener,
-      opt,
+      opt
     );
     this._dragRoot.addEventListener(
       `touchend`,
-      this._touchend.bind(this) as EventListener,
+      this._touchend.bind(this) as EventListener
     );
     this._dragRoot.addEventListener(
       `touchcancel`,
-      this._touchend.bind(this) as EventListener,
+      this._touchend.bind(this) as EventListener
     );
   }
 
@@ -222,7 +220,7 @@ class DragDropTouch {
 
           // show context menu if the user hasn't started dragging after a while
           DEBUG: console.log(`setting a contextmenu timeout`);
-          this._contextMenuIntervalId = setTimeout(() => {
+          setTimeout(() => {
             if (this._dragSource === src && this._img === null) {
               if (this._dispatchEvent(e, `contextmenu`, src)) {
                 this._reset();
@@ -278,11 +276,6 @@ class DragDropTouch {
         return;
       }
 
-      if (this._contextMenuIntervalId) {
-        clearTimeout(this._contextMenuIntervalId);
-        this._contextMenuIntervalId = undefined;
-      }
-
       // start dragging
       if (this._dragSource && !this._img && this._shouldStartDragging(e)) {
         DEBUG: console.log(`should start dragging`);
@@ -333,7 +326,7 @@ class DragDropTouch {
 
     if (!(this._lastTouch && e.target && this._lastTarget)) {
       DEBUG: console.log(
-        `touchend seemingly without a start? Resetting state.`,
+        `touchend seemingly without a start? Resetting state.`
       );
       this._reset();
       return;
@@ -440,7 +433,6 @@ class DragDropTouch {
     this._isDragEnabled = false;
     this._isDropZone = false;
     this._dataTransfer = new DragDTO(this);
-    clearTimeout(this._contextMenuIntervalId);
     clearTimeout(this._pressHoldIntervalId);
   }
 
@@ -557,7 +549,7 @@ class DragDropTouch {
   _dispatchEvent(
     srcEvent: TouchEvent,
     type: keyof GlobalEventHandlersEventMap,
-    target: EventTarget,
+    target: EventTarget
   ) {
     if (!(srcEvent && target)) return false;
     const evt = newForwardableEvent(type, srcEvent, target as HTMLElement);
@@ -592,7 +584,7 @@ class DragDropTouch {
 export function enableDragDropTouch(
   dragRoot: Document | Element = document,
   dropRoot: Document | Element = document,
-  options?: Partial<typeof DefaultConfiguration>,
+  options?: Partial<typeof DefaultConfiguration>
 ) {
   new DragDropTouch(dragRoot, dropRoot, options);
 }
@@ -614,7 +606,7 @@ else {
     enable: function (
       dragRoot: Document | Element = document,
       dropRoot: Document | Element = document,
-      options?: Partial<typeof DefaultConfiguration>,
+      options?: Partial<typeof DefaultConfiguration>
     ): void {
       enableDragDropTouch(dragRoot, dropRoot, options);
     },
