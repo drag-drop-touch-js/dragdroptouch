@@ -10,17 +10,17 @@
 
       function enablePressHold() {
         enableDragDropTouch(document, document, {
-          isPressHoldMode: true
-        );
+          isPressHoldMode: true,
+        });
       }
 
       function enablePressHold5() {
         enableDragDropTouch(document, document, {
           isPressHoldMode: true,
-          pressHoldThresholdPixels: 5
-        );
+          pressHoldThresholdPixels: 5,
+        });
       }
-      
+
       document.addEventListener(`dragover`, (e) => e.preventDefault());
 
       document.addEventListener(`drop`, (e) => {
