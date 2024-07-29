@@ -9,25 +9,22 @@
         pressHoldThresholdPixels: 5,
       });
 
-      document.addEventListener("dragover", (e) => {
+      document.addEventListener(`dragover`, (e) => e.preventDefault());
+
+      document.addEventListener(`drop`, (e) => {
         e.preventDefault();
+        document.body.innerText = e.dataTransfer.getData(`text/plain`);
       });
 
-      document.addEventListener("drop", (e) => {
-        e.preventDefault();
-        document.body.innerText = e.dataTransfer.getData("text/plain");
-      });
-
-      document.addEventListener("dragstart", (e) => {
-        e.dataTransfer.setData("text/plain", e.target.href);
-      });
+      document.addEventListener(`dragstart`, (e) => e.dataTransfer.setData(`text/plain`, `we dragged a ${e.target.tagName}));
     </script>
   </head>
 
   <body>
     <p>window A</p>
-    <p>
-      <a href="#results" draggable="true">
+
+    <p draggable="true">
+      <a href="#results">
         <svg>
           <rect width="300" height="200" style="cursor: pointer; fill: green" />
           <text x="50%" y="50%" dy=".3em" text-anchor="middle" fill="white" style="font: bold 20px sans-serif;">
@@ -36,6 +33,7 @@
         </svg>
       </a>
     </p>
+    
     <p>window B</p>
   </body>
 </html>
