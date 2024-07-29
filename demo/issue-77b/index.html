@@ -21,6 +21,10 @@
         });
       }
 
+      btnBase.addEventListener(`click`, () => enableBaseLine());
+      btnPres.addEventListener(`click`, () => enablePressHold());
+      btnPress5.addEventListener(`click`, () => enablePressHold5());
+
       document.addEventListener(`dragover`, (e) => e.preventDefault());
 
       document.addEventListener(`drop`, (e) => {
@@ -35,9 +39,9 @@
   </head>
 
   <body>
-    <button onclick="enableBaseLine">baseline</button>
-    <button onclick="enableBaseLine">presshold</button>
-    <button onclick="enableBaseLine">presshold + 5</button>
+    <button id="btnBase">baseline</button>
+    <button id="btnPress">presshold</button>
+    <button id="btnPress5">presshold + 5</button>
 
     <p>window A</p>
 
