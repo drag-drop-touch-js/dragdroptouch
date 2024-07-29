@@ -6,9 +6,10 @@
   "main": "dist/drag-drop-touch.esm.js",
   "scripts": {
     "build:base": "esbuild --bundle --format=esm ./ts/drag-drop-touch.ts",
-    "build:esm": "npm run build:base -- --outfile=dist/drag-drop-touch.esm.js",
-    "build:min": "npm run build:base -- --minify --outfile=dist/drag-drop-touch.esm.min.js",
-    "build": "npm run lint && npm run build:esm && npm run build:min",
+    "build:esm:debug": "npm run build:base -- --outfile=dist/drag-drop-touch.debug.esm.js",
+    "build:esm": "npm run build:base -- --drop-labels=DEBUG --outfile=dist/drag-drop-touch.esm.js",
+    "build:min": "npm run build:base -- --drop-labels=DEBUG --minify --outfile=dist/drag-drop-touch.esm.min.js",
+    "build": "npm run lint && npm run build:esm:debug && npm run build:esm && npm run build:min",
     "lint": "prettier -w ts/*.ts",
     "server": "node server.js",
     "start": "npm run build && npm run server",

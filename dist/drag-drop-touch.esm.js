@@ -171,11 +171,7 @@ var DragDropTouch = class {
   _img;
   _imgCustom;
   _imgOffset;
-  // Note that this typing is _not_ true for Node, because it does not follow
-  // the official JS Timers specification. However, Node does not have native
-  // support for typescript, and so by the time this code runs there is no
-  // problem. Similarly, native-typescript engines like Deno or Bun *do* follow
-  // the spec and so the following typing is correct when running in those.
+  _contextMenuIntervalId;
   _pressHoldIntervalId;
   configuration;
   /**
@@ -263,7 +259,7 @@ var DragDropTouch = class {
           this._dragSource = src;
           this._ptDown = pointFrom(e);
           this._lastTouch = e;
-          setTimeout(() => {
+          this._contextMenuIntervalId = setTimeout(() => {
             if (this._dragSource === src && this._img === null) {
               if (this._dispatchEvent(e, `contextmenu`, src)) {
                 this._reset();
@@ -300,6 +296,10 @@ var DragDropTouch = class {
         this._lastTouch = e;
         e.preventDefault();
         return;
+      }
+      if (this._contextMenuIntervalId) {
+        clearTimeout(this._contextMenuIntervalId);
+        this._contextMenuIntervalId = void 0;
       }
       if (this._dragSource && !this._img && this._shouldStartDragging(e)) {
         if (this._dispatchEvent(this._lastTouch, `dragstart`, this._dragSource)) {
@@ -413,6 +413,7 @@ var DragDropTouch = class {
     this._isDragEnabled = false;
     this._isDropZone = false;
     this._dataTransfer = new DragDTO(this);
+    clearTimeout(this._contextMenuIntervalId);
     clearTimeout(this._pressHoldIntervalId);
   }
   /**
