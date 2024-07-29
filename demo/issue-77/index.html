@@ -1,0 +1,73 @@
+﻿<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test file for issue 77</title>
+    <script type="module">
+      import { enableDragDropTouch } from "./drag-drop-touch.esm.min.js";
+      enableDragDropTouch(document, document, {
+        isPressHoldMode: true,
+        pressHoldThresholdPixels: 5,
+      });
+    </script>
+    <script src="../index.js" type="module" async></script>
+    <link rel="stylesheet" href="../index.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Test page for issue 77</h1>
+      <p>
+        <a href="https://github.com/drag-drop-touch-js/dragdroptouch/issues/77"
+          >https://github.com/drag-drop-touch-js/dragdroptouch/issues/77</a
+        >
+      </p>
+    </header>
+
+    <main>
+      <section>
+        <div id="columns">
+          <div class="column" draggable="true">
+            <header>Input</header>
+            <input
+              title="input"
+              type="text"
+              placeholder="input"
+              autocomplete="none"
+            />
+            <input title="check" type="checkbox" />
+          </div>
+
+          <div class="column" draggable="true">
+            <header>TextArea</header>
+            <textarea title="textarea" placeholder="textarea"></textarea>
+          </div>
+
+          <div class="column" draggable="true">
+            <header>Select</header>
+            <select title="select">
+              <option>one</option>
+              <option>two</option>
+              <option>three</option>
+            </select>
+            <select title="multi" multiple>
+              <option>one</option>
+              <option>two</option>
+              <option>three</option>
+            </select>
+          </div>
+
+          <div class="column" draggable="true">
+            <header>Image</header>
+            <img
+              src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"
+              alt="grapefruit"
+              draggable="false"
+            />
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
