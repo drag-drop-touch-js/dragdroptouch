@@ -395,11 +395,10 @@ class DragDropTouch {
    */
   _shouldStartDragging(e: TouchEvent) {
     let delta = this._getDelta(e);
-    return (
-      delta > this.configuration.dragThresholdPixels ||
-      (this.configuration.isPressHoldMode &&
-        delta >= this.configuration.pressHoldThresholdPixels)
-    );
+    if (this.configuration.isPressHoldMode) {
+      return delta >= this.configuration.pressHoldThresholdPixels;
+    }
+    return delta > this.configuration.dragThresholdPixels;
   }
 
   /**
