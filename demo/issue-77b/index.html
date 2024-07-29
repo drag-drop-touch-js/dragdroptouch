@@ -4,8 +4,23 @@
     <script type="module">
       import { enableDragDropTouch } from "https://drag-drop-touch-js.github.io/dragdroptouch/dist/drag-drop-touch.esm.min.js";
 
-      enableDragDropTouch();
+      function enableBaseLine() {
+        enableDragDropTouch();
+      }
 
+      function enablePressHold() {
+        enableDragDropTouch(document, document, {
+          isPressHoldMode: true
+        );
+      }
+
+      function enablePressHold5() {
+        enableDragDropTouch(document, document, {
+          isPressHoldMode: true,
+          pressHoldThresholdPixels: 5
+        );
+      }
+      
       document.addEventListener(`dragover`, (e) => e.preventDefault());
 
       document.addEventListener(`drop`, (e) => {
@@ -20,6 +35,10 @@
   </head>
 
   <body>
+    <button onclick="enableBaseLine">baseline</button>
+    <button onclick="enableBaseLine">presshold</button>
+    <button onclick="enableBaseLine">presshold + 5</button>
+
     <p>window A</p>
 
     <p>
