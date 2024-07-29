@@ -9,12 +9,13 @@
     "build:esm:debug": "npm run build:base -- --outfile=dist/drag-drop-touch.debug.esm.js",
     "build:esm": "npm run build:base -- --drop-labels=DEBUG --outfile=dist/drag-drop-touch.esm.js",
     "build:min": "npm run build:base -- --drop-labels=DEBUG --minify --outfile=dist/drag-drop-touch.esm.min.js",
-    "build": "npm run lint && npm run build:esm:debug && npm run build:esm && npm run build:min",
-    "lint": "prettier -w ts/*.ts",
+    "build": "npm run lint && npm run format && npm run build:esm:debug && npm run build:esm && npm run build:min",
+    "dev:setup": "playwright install",
+    "format": "prettier -w ts/*.ts",
+    "lint": "tsc --noEmit --target esnext --module esnext ts/drag-drop-touch.ts",
     "server": "node server.js",
     "start": "npm run build && npm run server",
     "test:integration": "playwright test tests --workers=1 --timeout 5000 --global-timeout 15000",
-    "dev:setup": "playwright install",
     "test": "npm run start -- -- --test  && rm -rf test-results"
   },
   "repository": {
@@ -43,6 +44,7 @@
     "esbuild": "^0.23.0",
     "express": "^4.19.2",
     "playwright": "^1.45.2",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
   }
 }

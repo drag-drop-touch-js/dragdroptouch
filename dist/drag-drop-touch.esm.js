@@ -171,7 +171,6 @@ var DragDropTouch = class {
   _img;
   _imgCustom;
   _imgOffset;
-  _contextMenuIntervalId;
   _pressHoldIntervalId;
   configuration;
   /**
@@ -259,7 +258,7 @@ var DragDropTouch = class {
           this._dragSource = src;
           this._ptDown = pointFrom(e);
           this._lastTouch = e;
-          this._contextMenuIntervalId = setTimeout(() => {
+          setTimeout(() => {
             if (this._dragSource === src && this._img === null) {
               if (this._dispatchEvent(e, `contextmenu`, src)) {
                 this._reset();
@@ -296,10 +295,6 @@ var DragDropTouch = class {
         this._lastTouch = e;
         e.preventDefault();
         return;
-      }
-      if (this._contextMenuIntervalId) {
-        clearTimeout(this._contextMenuIntervalId);
-        this._contextMenuIntervalId = void 0;
       }
       if (this._dragSource && !this._img && this._shouldStartDragging(e)) {
         if (this._dispatchEvent(this._lastTouch, `dragstart`, this._dragSource)) {
@@ -413,7 +408,6 @@ var DragDropTouch = class {
     this._isDragEnabled = false;
     this._isDropZone = false;
     this._dataTransfer = new DragDTO(this);
-    clearTimeout(this._contextMenuIntervalId);
     clearTimeout(this._pressHoldIntervalId);
   }
   /**

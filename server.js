@@ -32,7 +32,17 @@ app.use((req, res, next) => {
 });
 
 // static routes
-app.get(`/`, (req, res) => res.redirect(`/demo`));
+app.use(`/`, (req, res, next) => {
+  const { url } = req;
+  if (url === `/`) {
+    return res.redirect(`/demo`);
+  }
+  const testing = process.argv.includes(`--test`);
+  if (url === `/dist/drag-drop-touch.esm.min.js?autoload` && !testing) {
+    return res.redirect(`/dist/drag-drop-touch.debug.esm.js?autoload`);
+  }
+  next();
+});
 app.use(`/`, express.static(`.`));
 app.use((req, res) => {
   if (req.query.preview) {

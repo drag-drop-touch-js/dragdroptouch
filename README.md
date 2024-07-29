@@ -151,3 +151,28 @@ polyfill works:
 ## License
 
 [MIT License](./LICENSE)
+
+## For developers
+
+If you wish to work on this library, fork and clone the repository, then run
+`npm install` to install all the dependency, followed by a one-time
+`npm run dev:setup`, which will install the necessary components for running
+the integration tests.
+
+### Running tests
+
+This repository uses the standard `npm test` command to run build and
+integration tests. Build testing consists of linting the source code using `tsc`,
+auto-formatting it using `prettier`, and compiling it into three bundles (debug, normal, and minified) using `esbuild`. Integration tests are found in the
+`tests/touch.spec.js` file, using Playwright as test runner.
+
+### Manual testing
+
+To manually test in the browser, you can run `npm start` and then open the
+URL that is printed to the console once the initial build tasks have finished.
+This runs a local server that lets you run the demo page, but with the
+`drag-drop-touch.esm.min.js` replaced by a `drag-drop-touch.debug.esm.js`
+instead, which preserves  all debug statements used in the TypeScript source.
+
+To add your own debug statements, use the `DEBUG:` label followed by either
+a normal statement, or multiple statements wrapped in a new block.

@@ -131,7 +131,7 @@ class DragDropTouch {
   constructor(
     dragRoot: Document | Element = document,
     dropRoot: Document | Element = document,
-    options?: Partial<DragDropTouchConfiguration>
+    options?: Partial<DragDropTouchConfiguration>,
   ) {
     this.configuration = { ...DefaultConfiguration, ...(options || {}) };
     this._dragRoot = dragRoot;
@@ -168,20 +168,20 @@ class DragDropTouch {
     this._dragRoot.addEventListener(
       `touchstart`,
       this._touchstart.bind(this) as EventListener,
-      opt
+      opt,
     );
     this._dragRoot.addEventListener(
       `touchmove`,
       this._touchmove.bind(this) as EventListener,
-      opt
+      opt,
     );
     this._dragRoot.addEventListener(
       `touchend`,
-      this._touchend.bind(this) as EventListener
+      this._touchend.bind(this) as EventListener,
     );
     this._dragRoot.addEventListener(
       `touchcancel`,
-      this._touchend.bind(this) as EventListener
+      this._touchend.bind(this) as EventListener,
     );
   }
 
@@ -325,9 +325,7 @@ class DragDropTouch {
     DEBUG: console.log(`touchend`);
 
     if (!(this._lastTouch && e.target && this._lastTarget)) {
-      DEBUG: console.log(
-        `touchend seemingly without a start? Resetting state.`
-      );
+      DEBUG: console.log(`no lastTouch for touchend, resetting state.`);
       this._reset();
       return;
     }
@@ -549,7 +547,7 @@ class DragDropTouch {
   _dispatchEvent(
     srcEvent: TouchEvent,
     type: keyof GlobalEventHandlersEventMap,
-    target: EventTarget
+    target: EventTarget,
   ) {
     if (!(srcEvent && target)) return false;
     const evt = newForwardableEvent(type, srcEvent, target as HTMLElement);
@@ -584,7 +582,7 @@ class DragDropTouch {
 export function enableDragDropTouch(
   dragRoot: Document | Element = document,
   dropRoot: Document | Element = document,
-  options?: Partial<typeof DefaultConfiguration>
+  options?: Partial<typeof DefaultConfiguration>,
 ) {
   new DragDropTouch(dragRoot, dropRoot, options);
 }
@@ -606,7 +604,7 @@ else {
     enable: function (
       dragRoot: Document | Element = document,
       dropRoot: Document | Element = document,
-      options?: Partial<typeof DefaultConfiguration>
+      options?: Partial<typeof DefaultConfiguration>,
     ): void {
       enableDragDropTouch(dragRoot, dropRoot, options);
     },
