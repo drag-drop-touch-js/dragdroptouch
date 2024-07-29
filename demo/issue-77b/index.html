@@ -6,7 +6,6 @@
 
       enableDragDropTouch(document, document, {
         isPressHoldMode: true,
-        pressHoldThresholdPixels: 5,
       });
 
       document.addEventListener(`dragover`, (e) => e.preventDefault());
@@ -23,7 +22,7 @@
   <body>
     <p>window A</p>
 
-    <p draggable="true">
+    <p>
       <a href="#results">
         <svg>
           <rect width="300" height="200" style="cursor: pointer; fill: green" />
