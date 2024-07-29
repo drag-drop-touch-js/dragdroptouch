@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="module">
+      import { enableDragDropTouch } from "https://drag-drop-touch-js.github.io/dragdroptouch/dist/drag-drop-touch.esm.min.js";
+
+      enableDragDropTouch(document, document, {
+        isPressHoldMode: true,
+        pressHoldThresholdPixels: 5,
+      });
+
+      document.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
+
+      document.addEventListener("drop", (e) => {
+        e.preventDefault();
+        document.body.innerText = e.dataTransfer.getData("text/plain");
+      });
+
+      document.addEventListener("dragstart", (e) => {
+        e.dataTransfer.setData("text/plain", e.target.href);
+      });
+    </script>
+  </head>
+
+  <body>
+    <p>window A</p>
+    <p>
+      <a href="#">
+        <svg>
+          <rect width="300" height="200" style="cursor: pointer; fill: green" />
+          <text x="50%" y="50%" dy=".3em" text-anchor="middle" fill="white" style="font: bold 20px sans-serif;">
+            testing
+          </text>
+        </svg>
+      </a>
+    </p>
+    <p>window B</p>
+  </body>
+</html>
