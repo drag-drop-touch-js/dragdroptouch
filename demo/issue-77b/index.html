@@ -13,7 +13,9 @@
         document.body.innerText = e.dataTransfer.getData(`text/plain`);
       });
 
-      document.addEventListener(`dragstart`, (e) => e.dataTransfer.setData(`text/plain`, `we dragged a ${e.target.tagName}));
+      document.addEventListener(`dragstart`, (e) =>
+        e.dataTransfer.setData(`text/plain`, `we dragged a ${e.target.tagName}`)
+      );
     </script>
   </head>
 
@@ -24,13 +26,20 @@
       <a href="#results">
         <svg>
           <rect width="300" height="200" style="cursor: pointer; fill: green" />
-          <text x="50%" y="50%" dy=".3em" text-anchor="middle" fill="white" style="font: bold 20px sans-serif;">
+          <text
+            x="50%"
+            y="50%"
+            dy=".3em"
+            text-anchor="middle"
+            fill="white"
+            style="font: bold 20px sans-serif"
+          >
             testing
           </text>
         </svg>
       </a>
     </p>
-    
+
     <p>window B</p>
   </body>
 </html>
