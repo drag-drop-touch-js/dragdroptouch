@@ -171,11 +171,6 @@ var DragDropTouch = class {
   _img;
   _imgCustom;
   _imgOffset;
-  // Note that this typing is _not_ true for Node, because it does not follow
-  // the official JS Timers specification. However, Node does not have native
-  // support for typescript, and so by the time this code runs there is no
-  // problem. Similarly, native-typescript engines like Deno or Bun *do* follow
-  // the spec and so the following typing is correct when running in those.
   _pressHoldIntervalId;
   configuration;
   /**

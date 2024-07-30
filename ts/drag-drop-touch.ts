@@ -108,13 +108,7 @@ class DragDropTouch {
   private _img: HTMLElement | null;
   private _imgCustom: HTMLElement | null;
   private _imgOffset: Point;
-
-  // Note that this typing is _not_ true for Node, because it does not follow
-  // the official JS Timers specification. However, Node does not have native
-  // support for typescript, and so by the time this code runs there is no
-  // problem. Similarly, native-typescript engines like Deno or Bun *do* follow
-  // the spec and so the following typing is correct when running in those.
-  private _pressHoldIntervalId?: number | undefined;
+  private _pressHoldIntervalId?: ReturnType<typeof setTimeout> | undefined;
 
   private readonly configuration: DragDropTouchConfiguration;
 
@@ -207,7 +201,9 @@ class DragDropTouch {
    * @param e
    */
   _touchstart(e: TouchEvent) {
+    DEBUG: console.log(`touchstart`);
     if (this._shouldHandle(e)) {
+      DEBUG: console.log(`handling touch start, resetting state`);
       this._reset();
       let src = this._closestDraggable(e.target as HTMLElement);
       if (src) {
@@ -223,6 +219,7 @@ class DragDropTouch {
           this._lastTouch = e;
 
           // show context menu if the user hasn't started dragging after a while
+          DEBUG: console.log(`setting a contextmenu timeout`);
           setTimeout(() => {
             if (this._dragSource === src && this._img === null) {
               if (this._dispatchEvent(e, `contextmenu`, src)) {
@@ -232,6 +229,7 @@ class DragDropTouch {
           }, this.configuration.contextMenuDelayMS);
 
           if (this.configuration.isPressHoldMode) {
+            DEBUG: console.log(`setting a press-hold timeout`);
             this._pressHoldIntervalId = setTimeout(() => {
               this._isDragEnabled = true;
               this._touchmove(e);
@@ -243,6 +241,7 @@ class DragDropTouch {
           // been turned into click events by the browser.
           else if (!e.isTrusted) {
             if (e.target !== this._lastTarget) {
+              DEBUG: console.log(`synthetic touch start: saving _lastTarget`);
               this._lastTarget = e.target;
             }
           }
@@ -257,14 +256,21 @@ class DragDropTouch {
    * @returns
    */
   _touchmove(e: TouchEvent) {
+    DEBUG: console.log(`touchmove`);
+
     if (this._shouldCancelPressHoldMove(e)) {
+      DEBUG: console.log(`cancel press-hold move`);
       this._reset();
       return;
     }
+
     if (this._shouldHandleMove(e) || this._shouldHandlePressHoldMove(e)) {
+      DEBUG: console.log(`handling touch move`);
+
       // see if target wants to handle move
       let target = this._getTarget(e)!;
       if (this._dispatchEvent(e, `mousemove`, target)) {
+        DEBUG: console.log(`target handled mousemove, returning early.`);
         this._lastTouch = e;
         e.preventDefault();
         return;
@@ -272,10 +278,11 @@ class DragDropTouch {
 
       // start dragging
       if (this._dragSource && !this._img && this._shouldStartDragging(e)) {
+        DEBUG: console.log(`should start dragging`);
         if (
           this._dispatchEvent(this._lastTouch!, `dragstart`, this._dragSource)
         ) {
-          // target canceled the drag event
+          DEBUG: console.log(`target canceled drag event, returning early.`);
           this._dragSource = null;
           return;
         }
@@ -285,6 +292,7 @@ class DragDropTouch {
 
       // continue dragging
       if (this._img && this._dragSource) {
+        DEBUG: console.log(`continue dragging`);
         this._lastTouch = e;
         e.preventDefault();
 
@@ -300,6 +308,7 @@ class DragDropTouch {
 
         // Allow scrolling if the screen edges were marked as "hot regions".
         if (this.configuration.allowDragScroll) {
+          DEBUG: console.log(`synthetic scroll allowed`);
           const delta = this._getHotRegionDelta(e);
           globalThis.scrollBy(delta.x, delta.y);
         }
@@ -313,19 +322,26 @@ class DragDropTouch {
    * @returns
    */
   _touchend(e: TouchEvent) {
+    DEBUG: console.log(`touchend`);
+
     if (!(this._lastTouch && e.target && this._lastTarget)) {
+      DEBUG: console.log(`no lastTouch for touchend, resetting state.`);
       this._reset();
       return;
     }
 
     if (this._shouldHandle(e)) {
+      DEBUG: console.log(`handling touch end`);
+
       if (this._dispatchEvent(this._lastTouch, `mouseup`, e.target)) {
+        DEBUG: console.log(`target handled mouseup, returning early.`);
         e.preventDefault();
         return;
       }
 
       // user clicked the element but didn't drag, so clear the source and simulate a click
       if (!this._img) {
+        DEBUG: console.log(`click rather than drag.`);
         this._dragSource = null;
         this._dispatchEvent(this._lastTouch, `click`, e.target);
       }
@@ -333,7 +349,9 @@ class DragDropTouch {
       // finish dragging
       this._destroyImage();
       if (this._dragSource) {
+        DEBUG: console.log(`handling drop.`);
         if (e.type.indexOf(`cancel`) < 0 && this._isDropZone) {
+          DEBUG: console.log(`drop was canceled.`);
           this._dispatchEvent(this._lastTouch, `drop`, this._lastTarget);
         }
         this._dispatchEvent(this._lastTouch, `dragend`, this._dragSource);
