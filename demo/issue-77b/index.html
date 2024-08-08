@@ -2,7 +2,7 @@
 <html>
   <head>
     <script type="module">
-      import { enableDragDropTouch } from "https://drag-drop-touch-js.github.io/dragdroptouch/dist/drag-drop-touch.esm.min.js";
+      import { enableDragDropTouch } from "/dist/drag-drop-touch.debug.esm.js";
 
       function enableBaseLine() {
         enableDragDropTouch();
@@ -17,7 +17,7 @@
       function enablePressHold5() {
         enableDragDropTouch(document, document, {
           isPressHoldMode: true,
-          pressHoldThresholdPixels: 5,
+          pressHoldThresholdPixels: 50,
         });
       }
 

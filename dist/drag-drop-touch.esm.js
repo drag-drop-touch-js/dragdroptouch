@@ -416,7 +416,7 @@ var DragDropTouch = class {
    * @returns
    */
   _getDelta(e) {
-    if (!this._ptDown || this.configuration.isPressHoldMode) return 0;
+    if (!this._ptDown) return 0;
     const { x, y } = this._ptDown;
     const p = pointFrom(e);
     return ((p.x - x) ** 2 + (p.y - y) ** 2) ** 0.5;

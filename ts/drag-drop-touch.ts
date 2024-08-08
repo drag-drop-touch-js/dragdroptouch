@@ -414,6 +414,11 @@ class DragDropTouch {
   _shouldStartDragging(e: TouchEvent) {
     let delta = this._getDelta(e);
     if (this.configuration.isPressHoldMode) {
+      DEBUG: console.log(
+        this.configuration.isPressHoldMode,
+        delta,
+        this.configuration.pressHoldThresholdPixels,
+      );
       return delta >= this.configuration.pressHoldThresholdPixels;
     }
     return delta > this.configuration.dragThresholdPixels;
@@ -440,9 +445,8 @@ class DragDropTouch {
    * @returns
    */
   _getDelta(e: TouchEvent) {
-    // if there is no active touch, or we're already in
-    // long press mode, we don't need to calculate anything.
-    if (!this._ptDown || this.configuration.isPressHoldMode) return 0;
+    // if there is no active touch we don't need to calculate anything.
+    if (!this._ptDown) return 0;
 
     // Determine how `far` from the event coordinate our
     // original touch coordinate was.
