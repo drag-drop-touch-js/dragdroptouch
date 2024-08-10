@@ -1,6 +1,4 @@
-﻿// The rest of the code doesn't know anything about touch
-// events, it's written as normal drag-and-drop handlers.
-let draggable = null;
+﻿let draggable = null;
 const cols = document.querySelectorAll(`#columns .column`);
 
 cols.forEach((col) => {

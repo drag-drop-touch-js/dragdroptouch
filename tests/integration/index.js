@@ -2,8 +2,6 @@
 import * as simulatedTouch from "./touch-simulation.js";
 globalThis.simulatedTouch = simulatedTouch;
 
-// The rest of the code doesn't know anything about touch
-// events, it's written as normal drag-and-drop handlers.
 let draggable = null;
 const cols = document.querySelectorAll(`#columns .column`);
 
