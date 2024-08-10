@@ -16,7 +16,9 @@
     "server": "node server.js",
     "start": "npm run build && npm run server",
     "test:integration": "playwright test tests --workers=1 --timeout 5000 --global-timeout 15000",
-    "test": "npm run start -- -- --test  && rm -rf test-results"
+    "test": "npm run start -- -- --test && npm run test:cleanup",
+    "test:debug": "npm run start -- -- --test  --debug && npm run test:cleanup",
+    "test:cleanup": "rm -rf test-results"
   },
   "repository": {
     "type": "git",

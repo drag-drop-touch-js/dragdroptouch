@@ -1,0 +1,46 @@
+﻿[draggable] {
+  user-select: none;
+}
+
+.dragging {
+  opacity: 0.5;
+}
+
+#columns {
+  display: flex;
+  gap: 1rem;
+
+  .column {
+    display: inline-block;
+    height: 150px;
+    width: 150px;
+    background: lightgrey;
+    opacity: 1;
+
+    header {
+      color: #fff;
+      padding: 5px;
+      background: #222;
+      pointer-events: none;
+    }
+
+    &.over {
+      border: 2px dashed #000;
+      opacity: 0.5;
+      box-sizing: border-box;
+    }
+
+    & > input,
+    & > textarea,
+    & > select {
+      display: block;
+      width: 85%;
+      margin: 5%;
+      max-height: calc(1.25em * 4);
+    }
+
+    & > img {
+      height: 50%;
+    }
+  }
+}

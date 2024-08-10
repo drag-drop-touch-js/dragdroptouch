@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+  <head>
+    <script type="module" src="./test.js"></script>
+  </head>
+
+  <body>
+    <p>window A</p>
+
+    <p>
+      <a id="from" draggable="true">
+        <svg>
+          <rect width="300" height="200" style="cursor: pointer; fill: green" />
+          <text
+            x="50%"
+            y="50%"
+            dy=".3em"
+            text-anchor="middle"
+            fill="white"
+            style="font: bold 20px sans-serif"
+          >
+            testing
+          </text>
+        </svg>
+      </a>
+    </p>
+
+    <p id="to">window B</p>
+
+    <p id="result"></p>
+  </body>
+</html>

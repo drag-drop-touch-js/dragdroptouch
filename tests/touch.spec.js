@@ -4,14 +4,19 @@ async function bootstrapPage(browser, options = {}) {
   const context = await browser.newContext(options);
   const page = await context.newPage();
   page.on("console", (msg) => console.log(msg.text()));
-  await page.goto(`http://localhost:8000`);
+  if (options.page) {
+    await page.goto(`http://localhost:8000/${options.page}`);
+  } else {
+    await page.goto(`http://localhost:8000`);
+  }
   return page;
 }
 
 test.describe(`touch events`, () => {
-  let page;
+  let browser, page;
 
-  test.beforeEach(async ({ browser }) => {
+  test.beforeEach(async ({ browser: b }) => {
+    browser = b;
     page = await bootstrapPage(browser, {
       hasTouch: true,
     });
@@ -21,7 +26,6 @@ test.describe(`touch events`, () => {
     return page.evaluate((eventType) => {
       return new Promise((resolve) => {
         document.querySelector(qs).addEventListener(eventType, ({ type }) => {
-          // fill this it
           resolve({ type });
         });
       });
@@ -38,14 +42,14 @@ test.describe(`touch events`, () => {
     );
   }
 
-  async function touchDragEntry(sourceSelector, targetSelector) {
+  async function touchDragEntry(sourceSelector, targetSelector, options) {
     await page.evaluate(
-      async ({ sourceSelector, targetSelector }) => {
+      async ({ sourceSelector, targetSelector, options }) => {
         const from = document.querySelector(sourceSelector);
         const to = document.querySelector(targetSelector);
-        await globalThis.simulatedTouch.drag(from, to);
+        await globalThis.simulatedTouch.drag(from, to, options);
       },
-      { sourceSelector, targetSelector }
+      { sourceSelector, targetSelector, options}
     );
   }
 
@@ -97,5 +101,39 @@ test.describe(`touch events`, () => {
 
     expect(await e1.textContent()).toBe(`Input`);
     expect(await e2.textContent()).toBe(`Image`);
+  });
+
+  test(`longpress with 0px drag threshold`, async () => {
+    page = await bootstrapPage(browser, {
+      hasTouch: true,
+      page: `tests/integration/issue-77b/index.html`,
+    });
+
+    const textContent = await page.locator(`text`).textContent();
+    expect(textContent.trim()).toBe(`testing`);
+
+    await page.evaluate(() => globalThis.enablePressHold());
+    const from = `#from`;
+    const to = `#to`;
+    await touchDragEntry(from, to, { dragDelay: 500 });
+
+    expect(await page.locator(`#result`).textContent()).toBe(`we dragged a A`);
+  });
+
+  test(`longpress with 25px drag threshold`, async () => {
+    page = await bootstrapPage(browser, {
+      hasTouch: true,
+      page: `tests/integration/issue-77b/index.html`,
+    });
+
+    const textContent = await page.locator(`text`).textContent();
+    expect(textContent.trim()).toBe(`testing`);
+
+    await page.evaluate(() => globalThis.enablePressHold(25));
+    const from = `#from`;
+    const to = `#to`;
+    await touchDragEntry(from, to, { dragDelay: 500 });
+
+    expect(await page.locator(`#result`).textContent()).toBe(`we dragged a A`);
   });
 });

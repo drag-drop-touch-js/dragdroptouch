@@ -9,6 +9,11 @@ process.env.PORT = PORT;
 const HOSTNAME = process.env.HOSTNAME ?? `localhost`;
 process.env.HOSTNAME = HOSTNAME;
 
+const testing = process.argv.includes(`--test`);
+const debug = process.argv.includes(`--debug`);
+
+console.log({ debug, testing });
+
 const npm = process.platform === `win32` ? `npm.cmd` : `npm`;
 
 // Set up the core server
@@ -25,7 +30,7 @@ app.use((req, res, next) => {
 
 app.set("etag", false);
 app.use((req, res, next) => {
-  if (!process.argv.includes(`--test`)) {
+  if (!testing || (testing && debug)) {
     console.log(`[${new Date().toISOString()}] ${req.url}`);
   }
   next();
@@ -35,11 +40,14 @@ app.use((req, res, next) => {
 app.use(`/`, (req, res, next) => {
   const { url } = req;
   if (url === `/`) {
+    if (testing) return res.redirect(`/tests/integration`);
     return res.redirect(`/demo`);
   }
-  const testing = process.argv.includes(`--test`);
-  if (url === `/dist/drag-drop-touch.esm.min.js?autoload` && !testing) {
-    return res.redirect(`/dist/drag-drop-touch.debug.esm.js?autoload`);
+  if (
+    url.includes(`/dist/drag-drop-touch.esm.min.js`) &&
+    (!testing || (testing && debug))
+  ) {
+    return res.redirect(url.replace(`esm.min.js`, `debug.esm.js`));
   }
   next();
 });
@@ -61,7 +69,7 @@ app.listen(PORT, () => {
   console.log([``, line, mid, msg, mid, line, ``].join(`\n`));
 
   // are we running tests?
-  if (process.argv.includes(`--test`)) {
+  if (testing) {
     const runner = spawn(npm, [`run`, `test:integration`], {
       stdio: `inherit`,
     });
