@@ -11,9 +11,6 @@ process.env.HOSTNAME = HOSTNAME;
 
 const testing = process.argv.includes(`--test`);
 const debug = process.argv.includes(`--debug`);
-
-console.log({ debug, testing });
-
 const npm = process.platform === `win32` ? `npm.cmd` : `npm`;
 
 // Set up the core server
