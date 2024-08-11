@@ -3,30 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Test file for issue 77</title>
-    <script type="module">
-      import { enableDragDropTouch } from "../../dist/drag-drop-touch.esm.min.js";
-      enableDragDropTouch(document, document, {
-        isPressHoldMode: true,
-        pressHoldThresholdPixels: 5,
-      });
-    </script>
-    <script src="../index.js" type="module" async></script>
-    <link rel="stylesheet" href="../index.css" />
+    <title>DragDropTouch</title>
+    <script
+      src="../../dist/drag-drop-touch.esm.min.js?autoload"
+      type="module"
+    ></script>
+    <script src="./index.js" type="module" async></script>
+    <link rel="stylesheet" href="./index.css" />
   </head>
 
   <body>
     <header>
-      <h1>Test page for issue 77</h1>
-      <p>
-        <a href="https://github.com/drag-drop-touch-js/dragdroptouch/issues/77"
-          >https://github.com/drag-drop-touch-js/dragdroptouch/issues/77</a
-        >
-      </p>
+      <h1>TEST</h1>
     </header>
 
     <main>
       <section>
+        <header>
+          <h2>A box dragging example</h2>
+          <p>
+            Drag some boxes around with the mouse, then open your Developer
+            Tools, turn on mobile emulation, and try to do the same with touch
+            input enabled. Things should still work.
+          </p>
+        </header>
+
         <div id="columns">
           <div class="column" draggable="true">
             <header>Input</header>

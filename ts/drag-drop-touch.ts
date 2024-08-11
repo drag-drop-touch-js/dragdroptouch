@@ -229,8 +229,13 @@ class DragDropTouch {
           }, this.configuration.contextMenuDelayMS);
 
           if (this.configuration.isPressHoldMode) {
-            DEBUG: console.log(`setting a press-hold timeout`);
+            DEBUG: console.log(
+              `setting a press-hold timeout for ${this.configuration.pressHoldDelayMS}ms`,
+            );
             this._pressHoldIntervalId = setTimeout(() => {
+              DEBUG: console.log(
+                `this._isDragEnabled = true, calling touchMove`,
+              );
               this._isDragEnabled = true;
               this._touchmove(e);
             }, this.configuration.pressHoldDelayMS);
@@ -399,6 +404,14 @@ class DragDropTouch {
    * @returns
    */
   _shouldCancelPressHoldMove(e: TouchEvent) {
+    DEBUG: {
+      console.log({
+        isPressHoldMode: this.configuration.isPressHoldMode,
+        _isDragEnabled: this._isDragEnabled,
+        delta: this._getDelta(e),
+        pressHoldMargin: this.configuration.pressHoldMargin,
+      });
+    }
     return (
       this.configuration.isPressHoldMode &&
       !this._isDragEnabled &&

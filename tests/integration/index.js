@@ -1,4 +1,8 @@
-﻿let draggable = null;
+﻿// Add a tiny touch simulator for CI testing
+import * as simulatedTouch from "./touch-simulation.js";
+globalThis.simulatedTouch = simulatedTouch;
+
+let draggable = null;
 const cols = document.querySelectorAll(`#columns .column`);
 
 cols.forEach((col) => {

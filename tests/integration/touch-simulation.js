@@ -21,10 +21,12 @@ function simulate(eventType, element, { x, y }) {
   element.dispatchEvent(event);
 }
 
-export /* async */ function drag(from, to) {
+export /* async */ function drag(from, to, options = {}) {
   const { left, width, top } = from.getBoundingClientRect();
   const touch = { x: left + width / 2, y: top + 1, target: from };
   simulate("touchstart", from, touch);
+
+  const timeout = options.dragDelay || false;
 
   // simulate a dragging track
   const steps = 10;
@@ -34,17 +36,20 @@ export /* async */ function drag(from, to) {
   })(left, top);
 
   return new Promise((resolve) => {
-    (function drag(i = 0) {
+    function drag(i = 0) {
       if (i === steps - 1) {
         simulate("touchend", to, touch);
-        setTimeout(resolve, 10);
+        return setTimeout(resolve, 10);
       }
       touch.x += dx;
       touch.y += dy;
       touch.target = document;
       simulate("touchmove", to, touch);
       setTimeout(() => drag(i + 1), 100 / steps);
-    })();
+    }
+
+    if (!timeout) drag();
+    else setTimeout(drag, timeout);
   });
 }
 
