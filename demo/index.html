@@ -1,81 +1,758 @@
 ﻿<!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DragDropTouch</title>
-    <script src="../dist/drag-drop-touch.esm.min.js?autoload" type="module"></script>
-    <script src="./index.js" type="module" async></script>
-    <link rel="stylesheet" href="./index.css" />
-  </head>
-
-  <body>
-    <header>
-      <h1>Drag and Drop Touch</h1>
-      <p>
-        This is a demo page that loads the drag-drop-touch.esm.js file for
-        shimming drag-and-drop functions for touch events.
-      </p>
-      <p>
-        Its project page is over on
-        <a href="https://github.com/drag-drop-touch-js/dragdroptouch"
-          >https://github.com/drag-drop-touch-js/dragdroptouch</a
-        >.
-      </p>
-    </header>
-
-    <main>
-      <section>
-        <header>
-          <h2>A box dragging example</h2>
-          <p>
-            Drag some boxes around with the mouse, then open your Developer
-            Tools, turn on mobile emulation, and try to do the same with touch
-            input enabled. Things should still work.
-          </p>
-        </header>
-
-        <div id="columns">
-          <div class="column" draggable="true">
-            <header>Input</header>
-            <input
-              title="input"
-              type="text"
-              placeholder="input"
-              autocomplete="none"
-            />
-            <input title="check" type="checkbox" />
-          </div>
-
-          <div class="column" draggable="true">
-            <header>TextArea</header>
-            <textarea title="textarea" placeholder="textarea"></textarea>
-          </div>
-
-          <div class="column" draggable="true">
-            <header>Select</header>
-            <select title="select">
-              <option>one</option>
-              <option>two</option>
-              <option>three</option>
-            </select>
-            <select title="multi" multiple>
-              <option>one</option>
-              <option>two</option>
-              <option>three</option>
-            </select>
-          </div>
-
-          <div class="column" draggable="true">
-            <header>Image</header>
-            <img
-              src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"
-              alt="grapefruit"
-              draggable="false"
-            />
-          </div>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="A polyfill that enables HTML5 drag drop support on mobile (touch) devices."
+        />
+        <meta name="keywords" content="html5, drag, drop, mobile, touch, polyfill" />
+        <title>DragDropTouch</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/cascadia-code" />
+        <link rel="stylesheet" href="./index.css" />
+        <script src="../dist/drag-drop-touch.esm.min.js?autoload" type="module"></script>
+        <script src="./index.js" type="module" async></script>
+    </head>
+    <body style="display: contents">
+        <div id="container">
+            <header id="navbar">
+                <a href="https://github.com/drag-drop-touch-js/dragdroptouch" target="_blank">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-brand-github"
+                    >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+                        />
+                    </svg>
+                </a>
+                <button id="menu-button">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-menu"
+                    >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 8l16 0" />
+                        <path d="M4 16l16 0" />
+                    </svg>
+                </button>
+            </header>
+            <div id="navigation-menu">
+                <div id="background-overlay"></div>
+                <div id="menu">
+                    <div id="menu-links">
+                        <header>
+                            <span>Menu</span>
+                            <button id="close-button">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-x"
+                                >
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M18 6l-12 12" />
+                                    <path d="M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </header>
+                        <menu>
+                            <a href="#introduction">Introduction</a>
+                            <a href="#why">Why</a>
+                            <a href="#installation">Installation</a>
+                            <div class="menu-indented">
+                                <a href="#download-the-polyfill">Download the polyfill</a>
+                                <a href="#cdn-url">Via a CDN url</a>
+                                <a href="#esm">Via ESM</a>
+                            </div>
+                            <a href="#polyfill-behaviour">Polyfill behaviour</a>
+                            <a href="#overriding-default-behaviour"
+                                >Overriding the default behaviour</a
+                            >
+                            <a href="#examples">Examples</a>
+                            <div class="menu-indented">
+                                <a href="#dragging-some-boxes">Dragging some boxes</a>
+                                <a href="#sorting-tasks">Sorting tasks</a>
+                                <a href="#kanban-board">Kanban board</a>
+                            </div>
+                        </menu>
+                    </div>
+                    <span class="copyright"
+                        >&copy; <span class="current-year"></span>, drag-drop-touch-js</span
+                    >
+                </div>
+            </div>
+            <div id="content">
+                <aside id="desktop-nav">
+                    <menu>
+                        <span>On this page</span>
+                        <a href="#introduction">Introduction</a>
+                        <a href="#why">Why</a>
+                        <a href="#installation">Installation</a>
+                        <div class="menu-indented">
+                            <a href="#download-the-polyfill">Download the polyfill</a>
+                            <a href="#cdn-url">Via a CDN url</a>
+                            <a href="#esm">Via ESM</a>
+                        </div>
+                        <a href="#polyfill-behaviour">Polyfill behaviour</a>
+                        <a href="#overriding-default-behaviour">Overriding the default behaviour</a>
+                        <a href="#examples">Examples</a>
+                        <div class="menu-indented">
+                            <a href="#dragging-some-boxes">Dragging some boxes</a>
+                            <a href="#sorting-tasks">Sorting tasks</a>
+                            <a href="#kanban-board">Kanban board</a>
+                        </div>
+                    </menu>
+                    <a
+                        id="github-link"
+                        href="https://github.com/drag-drop-touch-js/dragdroptouch"
+                        target="_blank"
+                    >
+                        <span>Github page</span>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-external-link"
+                        >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"
+                            />
+                            <path d="M11 13l9 -9" />
+                            <path d="M15 4h5v5" />
+                        </svg>
+                    </a>
+                </aside>
+                <main>
+                    <section id="introduction">
+                        <h1><a href="#introduction">Drag and Drop Touch</a></h1>
+                        <p>
+                            A polyfill that enables HTML5 drag drop support on mobile (touch)
+                            devices.
+                        </p>
+                        <p>
+                            See the Github page
+                            <a
+                                href="https://github.com/drag-drop-touch-js/dragdroptouch"
+                                target="_blank"
+                                >here</a
+                            >.
+                        </p>
+                    </section>
+                    <section id="why">
+                        <h2>
+                            <a href="#why">Why</a>
+                        </h2>
+                        <p>
+                            The HTML5 specification includes support for drag and drop operations.
+                        </p>
+                        <p>
+                            Unfortunately, this specification is based on mouse events, rather than
+                            pointer events, and so most mobile browsers do not implement it.
+                        </p>
+                        <p>
+                            As such, applications that rely on HTML5 drag and drop have reduced
+                            functionality when running on mobile devices.
+                        </p>
+                        <p>
+                            The DragDropTouch class is a polyfill that translates touch events into
+                            standard HTML5 drag drop events.
+                        </p>
+                        <p>
+                            If you add the polyfill to your pages, drag and drop operations should
+                            work on mobile devices just like they do on the desktop.
+                        </p>
+                    </section>
+                    <section id="installation">
+                        <h2><a href="#installation">Installation</a></h2>
+                        <div>
+                            <h3 id="download-the-polyfill">
+                                <a href="#download-the-polyfill">Download the polyfill</a>
+                            </h3>
+                            <p>
+                                Add the <span class="snippet">drag-drop-touch.esm.js</span> or
+                                <span class="snippet">drag-drop-touch.esm.min.js</span> polyfill
+                                script to your page to enable drag and drop on devices with touch
+                                input:
+                            </p>
+                            <div id="download-polyfill-code" class="code-container"></div>
+                            <div class="note">
+                                <header>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="rgb(253 224 71)"
+                                        class="icon icon-tabler icons-tabler-filled icon-tabler-alert-triangle"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M12 1.67c.955 0 1.845 .467 2.39 1.247l.105 .16l8.114 13.548a2.914 2.914 0 0 1 -2.307 4.363l-.195 .008h-16.225a2.914 2.914 0 0 1 -2.582 -4.2l.099 -.185l8.11 -13.538a2.914 2.914 0 0 1 2.491 -1.403zm.01 13.33l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -7a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z"
+                                        />
+                                    </svg>
+                                    <span
+                                        ><span class="snippet">?autoload</span> query argument</span
+                                    >
+                                </header>
+                                <p>
+                                    This loads the polyfill and immediately enables it so that you
+                                    do not need to write any code yourself.
+                                </p>
+                                <p>
+                                    If omitted, the library will instead set up a
+                                    <span class="snippet">window.DragDropTouch</span> object with a
+                                    single function,
+                                    <span class="snippet"
+                                        >DragDropTouch.enable(dragRoot, dropRoot, options)</span
+                                    >. All three arguments are optional.
+                                </p>
+                                <p>
+                                    If left off,
+                                    <span class="snippet">DragDropTouch.enable()</span> simply
+                                    polyfills the entire page.
+                                </p>
+                                <p>
+                                    If you only want the polyfill to apply to specific elements
+                                    though, you can call the enable function once for each set of
+                                    elements that need polyfilling.
+                                </p>
+                            </div>
+                            <div class="note">
+                                <header>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="rgb(253 224 71)"
+                                        class="icon icon-tabler icons-tabler-filled icon-tabler-alert-triangle"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M12 1.67c.955 0 1.845 .467 2.39 1.247l.105 .16l8.114 13.548a2.914 2.914 0 0 1 -2.307 4.363l-.195 .008h-16.225a2.914 2.914 0 0 1 -2.582 -4.2l.099 -.185l8.11 -13.538a2.914 2.914 0 0 1 2.491 -1.403zm.01 13.33l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -7a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z"
+                                        />
+                                    </svg>
+                                    <span
+                                        ><span class="snippet">type="module"</span> attribute</span
+                                    >
+                                </header>
+                                <p>
+                                    The <span class="snippet">type="module"</span> attribute is
+                                    required. If left off, you'll probably get a browser error
+                                    similar to:
+                                </p>
+                                <div id="import-meta-error-code" class="code-container"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 id="cdn-url"><a href="#cdn-url">Via a CDN url</a></h3>
+                            <p>
+                                If you can't or don't want to download the file, you can use the
+                                following to include the polyfill.
+                            </p>
+                            <div id="cdn-url-code" class="code-container"></div>
+                        </div>
+                        <div>
+                            <h3 id="esm"><a href="#esm">Via ESM</a></h3>
+                            <p>
+                                As an ES module, you can also use this polyfill as an import in
+                                other scripts:
+                            </p>
+                            <div id="esm-code" class="code-container"></div>
+                        </div>
+                    </section>
+                    <section id="polyfill-behaviour">
+                        <h2><a href="#polyfill-behaviour">Polyfill behaviour</a></h2>
+                        <p>
+                            The <span class="snippet">DragDropTouch</span> class attaches listeners
+                            to the document's touch events:
+                        </p>
+                        <ul>
+                            <li>
+                                <p>
+                                    On <span class="snippet">touchstart</span>, it checks whether
+                                    the target element has the
+                                    <span class="snippet">draggable</span> attribute or is contained
+                                    in an element that does. If that is the case, it saves a
+                                    reference to the "drag source" element and prevents the default
+                                    handling of the event.
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    On <span class="snippet">touchmove</span>, it checks whether the
+                                    touch has moved a certain threshold distance from the origin. If
+                                    that is the case, it raises the
+                                    <span class="snippet">dragstart</span> event and continues
+                                    monitoring moves to fire
+                                    <span class="snippet">dragenter</span> and
+                                    <span class="snippet">dragleave</span>.
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    On <span class="snippet">touchend</span>, it raises the
+                                    <span class="snippet">dragend</span> and
+                                    <span class="snippet">drop</span> events.
+                                </p>
+                            </li>
+                        </ul>
+                        <p>
+                            To avoid interfering with the automatic browser translation of some
+                            touch events into mouse events, the polyfill performs a few additional
+                            tasks:
+                        </p>
+                        <ul>
+                            <li>
+                                <p>
+                                    Raise the <span class="snippet">mousemove</span>,
+                                    <span class="snippet">mousedown</span>,
+                                    <span class="snippet">mouseup</span>, and
+                                    <span class="snippet">click</span> events when the user touches
+                                    a draggable element but doesn't start dragging
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Raise the <span class="snippet">dblclick</span> event when
+                                    there's a new <span class="snippet">touchstart</span> right
+                                    after a click
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    Raise the <span class="snippet">contextmenu</span> event when
+                                    the touch lasts a while but the user doesn't start dragging the
+                                    element.
+                                </p>
+                            </li>
+                        </ul>
+                    </section>
+                    <section id="overriding-default-behaviour">
+                        <h2>
+                            <a href="#overriding-default-behaviour"
+                                >Overriding the default behaviour</a
+                            >
+                        </h2>
+                        <p>
+                            The following options can be passed into the enabling function to change
+                            how the polyfill works:
+                        </p>
+                        <div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="attribute">Attribute</th>
+                                        <th class="type">Type</th>
+                                        <th class="description">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="attribute">
+                                            <span class="snippet">allowDragScroll</span>
+                                        </td>
+                                        <td class="type"><span class="snippet">boolean</span></td>
+                                        <td class="description">
+                                            <span>
+                                                Determines whether to allow scrolling when a drag
+                                                reaches the edges of the screen.
+                                            </span>
+                                            <br />
+                                            <span class="default-value">Default: true</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">
+                                            <span class="snippet">contextMenuDelayMS</span>
+                                        </td>
+                                        <td class="type"><span class="snippet">number</span></td>
+                                        <td class="description">
+                                            <span>
+                                                The number of milliseconds before the polyfill
+                                                triggers a context menu event on long press.
+                                            </span>
+                                            <br />
+                                            <span class="default-value">Default: 900</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">
+                                            <span class="snippet">dragImageOpacity</span>
+                                        </td>
+                                        <td class="type">
+                                            <span class="snippet">number (0 to 1)</span>
+                                        </td>
+                                        <td class="description">
+                                            <span>
+                                                Determines how transparent the drag placeholder
+                                                attached to the cursor should be.
+                                            </span>
+                                            <br />
+                                            <span class="default-value">Default: 0.5</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">
+                                            <span class="snippet">dragScrollPercentage</span>
+                                        </td>
+                                        <td class="type"><span class="snippet">number</span></td>
+                                        <td class="description">
+                                            <span>
+                                                The size of the "hot region" at the edge of the
+                                                screen where scrolling is allowed during drag.
+                                            </span>
+                                            <br />
+                                            <span class="default-value">Default: 10</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">
+                                            <span class="snippet">dragScrollSpeed</span>
+                                        </td>
+                                        <td class="type"><span class="snippet">number</span></td>
+                                        <td class="description">
+                                            <span>
+                                                The number of pixels to scroll when a drag event
+                                                occurs within the scrolling region.
+                                            </span>
+                                            <br />
+                                            <span class="default-value">Default: 10</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">
+                                            <span class="snippet">dragThresholdPixels</span>
+                                        </td>
+                                        <td class="type"><span class="snippet">number</span></td>
+                                        <td class="description">
+                                            <span>
+                                                The number of pixels a touchmove needs to travel
+                                                before switching to drag mode.
+                                            </span>
+                                            <br />
+                                            <span class="default-value">Default: 5</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">
+                                            <span class="snippet">isPressHoldMode</span>
+                                        </td>
+                                        <td class="type"><span class="snippet">boolean</span></td>
+                                        <td class="description">
+                                            <span>
+                                                Determines whether a long press is required to
+                                                initiate drag events.
+                                            </span>
+                                            <br />
+                                            <span class="default-value">Default: false</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">
+                                            <span class="snippet">forceListen</span>
+                                        </td>
+                                        <td class="type"><span class="snippet">boolean</span></td>
+                                        <td class="description">
+                                            <span>
+                                                Determines whether the polyfill should be enabled
+                                                irrespective of device touch capability.
+                                            </span>
+                                            <br />
+                                            <span class="default-value">Default: true</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">
+                                            <span class="snippet">pressHoldDelayMS</span>
+                                        </td>
+                                        <td class="type"><span class="snippet">number</span></td>
+                                        <td class="description">
+                                            <span>
+                                                The number of milliseconds before the polyfill
+                                                considers an active press as a "long press".
+                                            </span>
+                                            <br />
+                                            <span class="default-value">Default: 400</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">
+                                            <span class="snippet">pressHoldMargin</span>
+                                        </td>
+                                        <td class="type"><span class="snippet">number</span></td>
+                                        <td class="description">
+                                            <span>
+                                                The number of pixels a touch event can drift during
+                                                a long press start.
+                                            </span>
+                                            <br />
+                                            <span class="default-value">Default: 25</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="attribute">
+                                            <span class="snippet">pressHoldThresholdPixels</span>
+                                        </td>
+                                        <td class="type"><span class="snippet">number</span></td>
+                                        <td class="description">
+                                            <span>
+                                                The drift in pixels that determines whether a long
+                                                press initiates or starts a touch-drag.
+                                            </span>
+                                            <br />
+                                            <span class="default-value">Default: 0</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                    <section id="examples">
+                        <h2><a href="#examples">Examples</a></h2>
+                        <p>
+                            Try some of the examples below, then 1) open your Developer Tools, turn
+                            on mobile emulation to enable touch input or 2) use your phone, and try
+                            to do the same. Things should still work.
+                        </p>
+                        <h3 id="dragging-some-boxes">
+                            <a href="#dragging-some-boxes">Dragging some boxes</a>
+                        </h3>
+                        <p>Just drag the boxes around.</p>
+                        <div id="columns">
+                            <div class="column" draggable="true">
+                                <header>Input</header>
+                                <input
+                                    title="input"
+                                    type="text"
+                                    placeholder="input"
+                                    autocomplete="none"
+                                />
+                                <input title="check" type="checkbox" />
+                            </div>
+                            <div class="column" draggable="true">
+                                <header>TextArea</header>
+                                <textarea title="textarea" placeholder="textarea"></textarea>
+                            </div>
+                            <div class="column" draggable="true">
+                                <header>Select</header>
+                                <select title="select">
+                                    <option>one</option>
+                                    <option>two</option>
+                                    <option>three</option>
+                                </select>
+                                <select title="multi" multiple>
+                                    <option>one</option>
+                                    <option>two</option>
+                                    <option>three</option>
+                                </select>
+                            </div>
+                            <div class="column" draggable="true">
+                                <header>Image</header>
+                                <img
+                                    src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg"
+                                    alt="grapefruit"
+                                    draggable="false"
+                                />
+                            </div>
+                        </div>
+                        <h3 id="sorting-tasks"><a href="#sorting-tasks">Sorting tasks</a></h3>
+                        <p>Drag the tasks into the order you want them to be sorted.</p>
+                        <ul id="tasks">
+                            <li class="task" draggable="true">
+                                <button>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-grip-vertical"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                    </svg>
+                                </button>
+                                <span>Clean the dishes</span>
+                            </li>
+                            <li class="task" draggable="true">
+                                <button>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-grip-vertical"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                    </svg>
+                                </button>
+                                <span>Walk the dog</span>
+                            </li>
+                            <li class="task" draggable="true">
+                                <button>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-grip-vertical"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                    </svg>
+                                </button>
+                                <span>Wash the car</span>
+                            </li>
+                            <li class="task" draggable="true">
+                                <button>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-grip-vertical"
+                                    >
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M9 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M9 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M9 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M15 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                    </svg>
+                                </button>
+                                <span>Feed the cat</span>
+                            </li>
+                        </ul>
+                        <h3 id="kanban-board">
+                            <a href="#kanban-bord">Kanban board</a>
+                        </h3>
+                        <p>Drag and drop tasks into a Kanban board:</p>
+                        <ul id="kanban-list">
+                            <li>
+                                <p>You can switch tasks by dropping one on top of another.</p>
+                            </li>
+                            <li>
+                                <p>You can reorder tasks by dragging them up or down.</p>
+                            </li>
+                            <li>
+                                <p>You can move them to another column by dragging them into it.</p>
+                            </li>
+                        </ul>
+                        <div id="kanban-board">
+                            <div id="backlog" class="block">
+                                <h4>Backlog</h4>
+                                <ul>
+                                    <li class="task" draggable="true">
+                                        <span>Implement user authentication flow</span>
+                                    </li>
+                                    <li class="task" draggable="true">
+                                        <span>Write unit tests for API</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="in-progress" class="block">
+                                <h4>In progress</h4>
+                                <ul>
+                                    <li class="task" draggable="true">
+                                        <span>Add error handling for login</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="done" class="block">
+                                <h4>Done</h4>
+                                <ul>
+                                    <li class="task" draggable="true">
+                                        <span>Set up the database</span>
+                                    </li>
+                                    <li class="task" draggable="true">
+                                        <span>Create API endpoints for users</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+            <footer>
+                <span class="copyright">
+                    &copy; <span class="current-year"></span>, drag-drop-touch-js
+                </span>
+            </footer>
         </div>
-      </section>
-    </main>
-  </body>
+    </body>
 </html>
