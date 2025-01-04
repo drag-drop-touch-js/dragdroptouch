@@ -608,7 +608,7 @@ export function enableDragDropTouch(
 // loaded from, by automatically building the singleton class
 // instance if we're being loaded with ?autoload as part of the
 // import URL.
-if (import.meta.url.includes(`?autoload`)) {
+if (import.meta.url?.includes(`?autoload`)) {
   enableDragDropTouch(document, document, {
     forceListen: true,
   });

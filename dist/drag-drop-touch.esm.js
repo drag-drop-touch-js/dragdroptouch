@@ -524,7 +524,7 @@ var DragDropTouch = class {
 function enableDragDropTouch(dragRoot = document, dropRoot = document, options) {
   new DragDropTouch(dragRoot, dropRoot, options);
 }
-if (import.meta.url.includes(`?autoload`)) {
+if (import.meta.url?.includes(`?autoload`)) {
   enableDragDropTouch(document, document, {
     forceListen: true
   });
