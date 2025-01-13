@@ -543,9 +543,9 @@ class DragDropTouch {
   _moveImage(e: TouchEvent) {
     requestAnimationFrame(() => {
       if (this._img) {
-        let pt = pointFrom(e, true),
+        let pt = pointFrom(e, false),
           s = this._img.style;
-        s.position = `absolute`;
+        s.position = `fixed`;
         s.pointerEvents = `none`;
         s.zIndex = `999999`;
         s.left = `${round(pt.x - this._imgOffset.x)}px`;
