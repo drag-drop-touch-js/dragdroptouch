@@ -156,7 +156,8 @@ var DefaultConfiguration = {
   isPressHoldMode: false,
   pressHoldDelayMS: 400,
   pressHoldMargin: 25,
-  pressHoldThresholdPixels: 0
+  pressHoldThresholdPixels: 0,
+  scrolledRegion: globalThis
 };
 var DragDropTouch = class {
   _dragRoot;
@@ -318,7 +319,8 @@ var DragDropTouch = class {
         this._isDropZone = this._dispatchEvent(e, `dragover`, target);
         if (this.configuration.allowDragScroll) {
           const delta = this._getHotRegionDelta(e);
-          globalThis.scrollBy(delta.x, delta.y);
+          let scrolledRegion = this.configuration.scrolledRegion || globalThis;
+          scrolledRegion.scrollBy(delta.x, delta.y);
         }
       }
     }
@@ -423,16 +425,42 @@ var DragDropTouch = class {
   }
   /**
    * ...docs go here...
+   */
+  _getScrolledRegionDimensions() {
+    let x = 0;
+    let y = 0;
+    let { innerWidth: w, innerHeight: h } = globalThis;
+    const scrolledRegion = this.configuration.scrolledRegion;
+    if (scrolledRegion && scrolledRegion !== globalThis) {
+      const bounds = scrolledRegion.getBoundingClientRect();
+      w = bounds.width;
+      h = bounds.height;
+      x = bounds.x;
+      y = bounds.y;
+    }
+    return { x, y, w, h };
+  }
+  /**
+   * ...docs go here...
    * @param e
    */
   _getHotRegionDelta(e) {
     const { clientX: x, clientY: y } = e.touches[0];
-    const { innerWidth: w, innerHeight: h } = globalThis;
+    const {
+      x: scrolledRegionX,
+      y: scrolledRegionY,
+      w,
+      h
+    } = this._getScrolledRegionDimensions();
     const { dragScrollPercentage, dragScrollSpeed } = this.configuration;
+    const rightEdge = scrolledRegionX + w;
+    const leftEdge = scrolledRegionX;
+    const topEdge = scrolledRegionY;
+    const bottomEdge = scrolledRegionY + h;
     const v1 = dragScrollPercentage / 100;
     const v2 = 1 - v1;
-    const dx = x < w * v1 ? -dragScrollSpeed : x > w * v2 ? +dragScrollSpeed : 0;
-    const dy = y < h * v1 ? -dragScrollSpeed : y > h * v2 ? +dragScrollSpeed : 0;
+    const dx = x < leftEdge + w * v1 ? -dragScrollSpeed : x > rightEdge * v2 ? +dragScrollSpeed : 0;
+    const dy = y < topEdge + h * v1 ? -dragScrollSpeed : y > bottomEdge * v2 ? +dragScrollSpeed : 0;
     return { x: dx, y: dy };
   }
   /**

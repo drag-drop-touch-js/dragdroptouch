@@ -138,7 +138,9 @@ polyfill works:
 - **pressHoldThresholdPixels** is the drift in pixels that determines whether
   a long press actually starts a long press, or starts a touch-drag instead.
   This value is 0 by default.
-
+- **scrolledRegion** is the region that is scrolled if allowDragScroll is true. 
+  Defaults to globalThis (window)
+  
 ## Thanks
 
 - Thanks to Eric Bidelman for the great tutorial on HTML5 drag and drop:
