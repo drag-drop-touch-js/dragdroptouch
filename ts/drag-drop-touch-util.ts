@@ -59,6 +59,7 @@ export function newForwardableEvent(
   const evt = new Event(type, {
       bubbles: true,
       cancelable: true,
+      composed: target.shadowRoot?.mode === "open",
     }) as unknown as Mutable<MouseEvent, "button" | "which" | "buttons"> & {
       readonly defaultPrevented: boolean;
     },
@@ -68,6 +69,19 @@ export function newForwardableEvent(
   copyProps(evt, srcEvent, _kbdProps);
   copyProps(evt, touch, _ptProps);
   setOffsetAndLayerProps(evt, target);
+  // set composedPath for shadow DOM
+  if (evt.composed) {
+    evt.composedPath = () => {
+      const pt = pointFrom(srcEvent);
+      const el = target.shadowRoot?.elementFromPoint(pt.x, pt.y);
+      const getPath = (e?: Element | null, path: Element[] = []) => {
+        if (!e) return path;
+        path.unshift(e);
+        return getPath(e.parentElement, path);
+      };
+      return getPath(el);
+    };
+  }
   return evt;
 }
 
