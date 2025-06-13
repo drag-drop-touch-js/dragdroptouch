@@ -71,7 +71,7 @@ You can also load the library using a CDN solution such as jsDelivr:
 
 ```html
 <script
-  src="https://cdn.jsdelivr.net/npm/@dragdroptouch/drag-drop-touch@2.0.2/dist/drag-drop-touch.esm.min.js"
+  src="https://cdn.jsdelivr.net/npm/@dragdroptouch/drag-drop-touch@latest/dist/drag-drop-touch.esm.min.js"
   type="module"
 ></script>
 ```
