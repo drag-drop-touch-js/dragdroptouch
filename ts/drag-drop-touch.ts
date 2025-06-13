@@ -56,6 +56,9 @@ type DragDropTouchConfiguration = {
   // The drift in pixels that determines whether a
   // long press starts a long press, or a touch-drag.
   pressHoldThresholdPixels: number;
+
+  // The region that is scrolled if allowDragScroll is true. Defaults to globalThis (window)
+  scrolledRegion: any;
 };
 
 const DefaultConfiguration: DragDropTouchConfiguration = {
@@ -70,6 +73,7 @@ const DefaultConfiguration: DragDropTouchConfiguration = {
   pressHoldDelayMS: 400,
   pressHoldMargin: 25,
   pressHoldThresholdPixels: 0,
+  scrolledRegion: globalThis,
 };
 
 interface Point {
@@ -311,11 +315,12 @@ class DragDropTouch {
         this._moveImage(e);
         this._isDropZone = this._dispatchEvent(e, `dragover`, target);
 
-        // Allow scrolling if the screen edges were marked as "hot regions".
+        // Allow scrolling if the scrolledRegion edges were marked as "hot regions".
         if (this.configuration.allowDragScroll) {
           DEBUG: console.log(`synthetic scroll allowed`);
           const delta = this._getHotRegionDelta(e);
-          globalThis.scrollBy(delta.x, delta.y);
+          let scrolledRegion = this.configuration.scrolledRegion || globalThis;
+          scrolledRegion.scrollBy(delta.x, delta.y);
         }
       }
     }
@@ -470,18 +475,56 @@ class DragDropTouch {
 
   /**
    * ...docs go here...
+   */
+  _getScrolledRegionDimensions() {
+    // This function abstracts getting dimensions (window vs element)
+    let x = 0;
+    let y = 0;
+    let { innerWidth: w, innerHeight: h } = globalThis;
+    const scrolledRegion = this.configuration.scrolledRegion;
+    if (scrolledRegion && scrolledRegion !== globalThis) {
+      const bounds = scrolledRegion.getBoundingClientRect();
+      w = bounds.width;
+      h = bounds.height;
+      x = bounds.x;
+      y = bounds.y;
+    }
+    return { x, y, w, h };
+  }
+
+  /**
+   * ...docs go here...
    * @param e
    */
   _getHotRegionDelta(e: TouchEvent) {
     const { clientX: x, clientY: y } = e.touches[0];
-    const { innerWidth: w, innerHeight: h } = globalThis;
+    const {
+      x: scrolledRegionX,
+      y: scrolledRegionY,
+      w,
+      h,
+    } = this._getScrolledRegionDimensions();
     const { dragScrollPercentage, dragScrollSpeed } = this.configuration;
+
+    const rightEdge = scrolledRegionX + w;
+    const leftEdge = scrolledRegionX;
+    const topEdge = scrolledRegionY;
+    const bottomEdge = scrolledRegionY + h;
+
     const v1 = dragScrollPercentage / 100;
     const v2 = 1 - v1;
     const dx =
-      x < w * v1 ? -dragScrollSpeed : x > w * v2 ? +dragScrollSpeed : 0;
+      x < leftEdge + w * v1
+        ? -dragScrollSpeed
+        : x > rightEdge * v2
+          ? +dragScrollSpeed
+          : 0;
     const dy =
-      y < h * v1 ? -dragScrollSpeed : y > h * v2 ? +dragScrollSpeed : 0;
+      y < topEdge + h * v1
+        ? -dragScrollSpeed
+        : y > bottomEdge * v2
+          ? +dragScrollSpeed
+          : 0;
     return { x: dx, y: dy };
   }
 
