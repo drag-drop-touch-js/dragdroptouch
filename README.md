@@ -25,8 +25,25 @@ well as the hot-key <code>ctrl-shift-M</code> on Windows and Linux, or
 
 ## How to "install"
 
-Add the `drag-drop-touch.esm.js` or `drag-drop-touch.esm.min.js` polyfill
-script to your page to enable drag and drop on devices with touch input:
+### using a package manager
+
+This package lives in the npm registry as `@dragdroptouch/drag-drop-touch`
+and can be installed with any package manager that can pull from the
+npm registery:
+
+```
+npm install -s @dragdroptouch/drag-drop-touch
+yarn install @dragdroptouch/drag-drop-touch
+pnpm add @dragdroptouch/drag-drop-touch
+```
+
+### just as a file
+
+Add the
+ [`drag-drop-touch.esm.js`](https://raw.githubusercontent.com/drag-drop-touch-js/dragdroptouch/refs/heads/master/dist/drag-drop-touch.esm.js)
+ or
+ [`drag-drop-touch.esm.min.js`](https://raw.githubusercontent.com/drag-drop-touch-js/dragdroptouch/refs/heads/master/dist/drag-drop-touch.esm.min.js)
+ polyfill script to your page to enable drag and drop on devices with touch input:
 
 ```html
 <script src="drag-drop-touch.esm.min.js?autoload" type="module"></script>
@@ -48,18 +65,20 @@ get a browser error similar to:
 Uncaught SyntaxError: import.meta may only appear in a module
 ```
 
-## Using a CDN url
+### Using a CDN url
+
+You can also load the library using a CDN solution such as jsDelivr:
 
 ```html
 <script
-  src="https://drag-drop-touch-js.github.io/dragdroptouch/dist/drag-drop-touch.esm.min.js"
+  src="https://cdn.jsdelivr.net/npm/@dragdroptouch/drag-drop-touch@2.0.2/dist/drag-drop-touch.esm.min.js"
   type="module"
 ></script>
 ```
 
-## Using a JS ESM import
+## This is a JS ES module
 
-As an ES module, you can also use this polyfill as an import in other scripts:
+As an ES module, you can also use this polyfill as an import in any other script:
 
 ```js
 import { enableDragDropTouch } from "./drag-drop-touch.esm.min.js";
